@@ -26,6 +26,7 @@ app.set('view engine', 'html');
 app.use(express.json());
 app.use(express.static('public'));
 
+// Настройка хранилища для загружаемых файлов
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './public/results/');
@@ -34,8 +35,10 @@ var storage = multer.diskStorage({
     cb(null, 'form' + path.extname(file.originalname));
   },
 });
+
 const upload = multer({ storage: storage });
 
+// Обработка загрузки файла
 app.post('/uploadFile', upload.single('fileUpload'), async (req, res) => {
   const now = `${Date.now()}`;
   var savePath = './public/results/form-' + now;
@@ -64,6 +67,7 @@ app.post('/uploadFile', upload.single('fileUpload'), async (req, res) => {
 
   console.log('Saved');
 
+  // Создание JSON структуры формы
   var formJson = {
     filename: req.file.originalname,
     formStructure: [],
@@ -86,6 +90,7 @@ app.post('/uploadFile', upload.single('fileUpload'), async (req, res) => {
   res.redirect('/results/form-' + now + '/1');
 });
 
+// Удаление формы
 app.get('/delete/:formId', async (req, res) => {
   const formId = req.params.formId;
   fs.rmdirSync('./public/results/form-' + formId, {
@@ -94,11 +99,13 @@ app.get('/delete/:formId', async (req, res) => {
   res.redirect('/');
 });
 
+// Извлечение вопросов формы
 app.get('/extractForm/:formId/:pageNum/', async (req, res) => {
   const llm = 'Ollama';
   return sendToLLM(llm, req, res);
 });
 
+// Отправка данных в LLM
 async function sendToLLM(llm, req, res) {
   const formId = req.params.formId;
   var savePath = './public/results/form-' + formId;
@@ -145,39 +152,24 @@ async function sendToLLM(llm, req, res) {
 // Функция для вызова API Ollama с путем к изображению и получения извлеченных вопросов формы
 async function callOllama(imagePath) {
   return new Promise((resolve, reject) => {
-
     const ollama = spawn('ollama', ['run', 'llava'], { shell: true });
+    let output = '';
+
     console.log(`Ollama launched successfully`);
 
-    let stdout = '';
-    let stderr = '';
-
     ollama.stdout.on('data', (data) => {
-      stdout += data.toString();
-    });
-
-    ollama.stderr.on('data', (data) => {
-      stderr += data.toString();
+      output += data.toString();
     });
 
     ollama.on('close', (code) => {
       console.log(`Ollama process exited with code ${code}`);
-      if (code !== 0) {
-        return reject(new Error(`Ollama process exited with code ${code}. stderr: ${stderr}`));
-      }
       try {
-        const cleanedOutput = stdout.replace(/```json\n|```/g, '');
+        const cleanedOutput = output.replace(/```json\n|```/g, '');
         const result = JSON.parse(cleanedOutput);
         resolve(result);
       } catch (error) {
-        console.error(`Failed to parse JSON: ${error.message}`);
-        reject(new Error(`Failed to parse JSON: ${error.message}. stdout: ${stdout}`));
+        reject(new Error(`Ollama process error: ${error.message}`));
       }
-    });
-
-    ollama.on('error', (error) => {
-      console.error(`Ollama process error: ${error.message}`);
-      reject(new Error(`Ollama process error: ${error.message}`));
     });
 
     const prompt = fs.readFileSync('data/ollama_prompt.txt', 'utf8');
@@ -186,6 +178,9 @@ async function callOllama(imagePath) {
   });
 }
 
+// === THE USER INTERFACE === //
+
+/* FUNCTION: Sum the items between two indexes in a numerical array */
 function arraySum(array, start, end) {
   var sum = 0;
   for (let i = start; i < end; i++) {
@@ -194,6 +189,7 @@ function arraySum(array, start, end) {
   return sum;
 }
 
+/* FUNCTION: Load file data  */
 function loadFileData(formId) {
   try {
     return JSON.parse(fs.readFileSync('./public/results/form-' + formId + '/form.json'));
@@ -204,12 +200,14 @@ function loadFileData(formId) {
 
 const port = 3000;
 
+/* Render home page */
 app.get('/', (req, res) => {
   const formList = fs.readdirSync('./public/results').filter((item) => item.startsWith('form-'));
   res.locals.formList = formList;
   res.render('index.njk');
 });
 
+/* Render results pages */
 app.get('/results/form-:formId/:pageNum/:question?', (req, res) => {
   const formId = req.params.formId;
   const pageNum = Number(req.params.pageNum);
@@ -222,6 +220,7 @@ app.get('/results/form-:formId/:pageNum/:question?', (req, res) => {
   res.render('result.njk');
 });
 
+/* Render pop-up check-answers pages */
 app.get('/form-popup/:formId/:question/check-answers', (req, res) => {
   const formId = req.params.formId;
   const question = req.params.question;
@@ -232,6 +231,7 @@ app.get('/form-popup/:formId/:question/check-answers', (req, res) => {
   res.render('check-answers-popup.njk');
 });
 
+/* Render check-answers pages */
 app.get('/forms/:formId/:pageNum/:question/check-answers', (req, res) => {
   const formId = req.params.formId;
   const pageNum = req.params.pageNum;
@@ -244,6 +244,7 @@ app.get('/forms/:formId/:pageNum/:question/check-answers', (req, res) => {
   res.render('check-answers.njk');
 });
 
+/* Render form pages */
 app.get('/forms/:formId/:pageNum/:question', (req, res) => {
   const formId = req.params.formId;
   const fileData = loadFileData(formId);
@@ -257,6 +258,7 @@ app.get('/forms/:formId/:pageNum/:question', (req, res) => {
   res.render('form.njk');
 });
 
+/* Render popup form pages */
 app.get('/form-popup/:formId/:questionIndex', (req, res) => {
   const formId = req.params.formId;
   const fileData = loadFileData(formId);
@@ -269,6 +271,7 @@ app.get('/form-popup/:formId/:questionIndex', (req, res) => {
   res.render('form-popup.njk');
 });
 
+/* Render list pages */
 app.get('/lists/:formId/:pageNum', (req, res) => {
   const formId = req.params.formId;
   const fileData = loadFileData(formId);
@@ -276,6 +279,7 @@ app.get('/lists/:formId/:pageNum', (req, res) => {
   res.render('list.njk');
 });
 
+/* Render JSON pages */
 app.get('/json/:formId/:pageNum', (req, res) => {
   const formId = req.params.formId;
   const fileData = loadFileData(formId);
