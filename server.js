@@ -3,7 +3,6 @@ import fs from 'fs';
 import bodyParser from 'body-parser';
 import express from 'express';
 import nunjucks from 'nunjucks';
-import fetch from 'node-fetch';
 import { fromPath } from 'pdf2pic';
 import multer from 'multer';
 import { performance } from 'perf_hooks';
@@ -109,8 +108,6 @@ async function sendToLLM(llm, req, res) {
     console.log('Sending data to ' + llm);
 
     const imagePath = `${savePath}/page.${pageNum}.jpeg`;
-    console.log(`Image path: ${imagePath}`);
-
     var startTime = performance.now();
 
     let result;
@@ -145,25 +142,22 @@ async function sendToLLM(llm, req, res) {
   }
 }
 
+// Функция для вызова API Ollama с путем к изображению и получения извлеченных вопросов формы
 async function callOllama(imagePath) {
   return new Promise((resolve, reject) => {
-    console.log(`Preparing to run Ollama with image path: ${imagePath}`);
 
     const ollama = spawn('ollama', ['run', 'llava'], { shell: true });
+    console.log(`Ollama launched successfully`);
 
     let stdout = '';
     let stderr = '';
 
-    console.log(`Running Ollama with initial command`);
-
     ollama.stdout.on('data', (data) => {
       stdout += data.toString();
-      //console.log(`stdout: ${data}`);
     });
 
     ollama.stderr.on('data', (data) => {
       stderr += data.toString();
-      //console.error(`stderr: ${data}`);
     });
 
     ollama.on('close', (code) => {
@@ -185,7 +179,9 @@ async function callOllama(imagePath) {
       console.error(`Ollama process error: ${error.message}`);
       reject(new Error(`Ollama process error: ${error.message}`));
     });
-    ollama.stdin.write(`This is an image of a form. Please output all of the questions in the form as a JSON array of objects. The array has the key "pages" and each question has the keys “id”, “question_text", "hint_text" and "answer_type". The value of "question_text" is the title of the question. The value of "hint_text" is any hint text for the question, or null if there is no hint text. The value of "answer_type" is one of the following: "number", "email", "name", "national_insurance_number", "phone_number", "organisation_name", "address", "date", "selection", "text”. Don’t come up with your own questions, work only with those in the photo. ${imagePath}\n`);
+
+    const prompt = fs.readFileSync('data/ollama_prompt.txt', 'utf8');
+    ollama.stdin.write(`${prompt} ${imagePath}\n`);
     ollama.stdin.end();
   });
 }
