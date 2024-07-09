@@ -19,14 +19,15 @@ AiForms is an application for extracting questions from forms presented as image
 
 ## Launching the application
 
-1. Install Ollama by following the instructions on [official website](https://ollama.com/)
-2. After installation, run the command in cmd:
+1. Make sure you have Node.JS and NPM installed. You can install these products on the [official website](https://nodejs.org/en)
+2. Install Ollama by following the instructions on [official website](https://ollama.com/)
+3. After installation, run the command in cmd:
     ```ollama run llava```
-3. Go to your project folder and install the required dependencies:
+4. Go to your project folder and install the required dependencies:
     ```npm install```
-4. While in the project folder, run the program with the command:
+5. While in the project folder, run the program with the command:
     ```node server.js```
-5. The application interface will be available at ```http://localhost:3000/```
+6. The application interface will be available at ```http://localhost:3000/```
 
 ## Contacts
 
