@@ -1,35 +1,36 @@
 # AiForms
 
-## Описание проекта
+## About the project
 
-AiForms - это приложение для извлечения вопросов из форм, представленных в виде изображений или PDF-файлов.
-Проект предназначен для предоставления удобного интерфейса на русском языке и решения проблемы доступности OpenAI и Claude в России путём использования локальной LLM Ollama + llava.
+AiForms is an application for extracting questions from forms presented as images or PDFs. The project is intended to provide a convenient interface in Russian and solve the problem of accessibility of OpenAI and Claude in Russia by using the local LLM Ollama + llava.
 
-## Основные возможности
+## Key Features
 
-- Загрузка и обработка изображений форм и PDF-документов
-- Извлечение вопросов из форм и представление их в формате JSON
-- Поддержка различных типов ответов, включая текст, дату, и radiobutton
-- Просмотр и управление загруженными формами через веб-интерфейс
+- Upload and process images of forms and PDF documents
+- Extract questions from forms and present them in JSON format
+- Supports various response types including text, date, and radiobutton
+- View and manage downloaded forms via web interface
 
-### Запланированные возможности
+### Planned Features
 
-- Увеличение точности распознавания вопросов и типов ответов
-- Улучшение пользовательского интерфейса, его полный редизайн, перевод на русский язык
-- Реализация функционала обратной генерации form + data -> pdf
+- Increased accuracy of recognition of questions and answer types
+- Improvement of the user interface, its complete redesign, translation into Russian
+- Implementation of the reverse generation functionality form + data -> pdf
 
-## Инструкция по запуску приложения
+## Launching the application
 
-1. Установите Ollama, следуя инструкциям на [официальном сайте](https://ollama.com/)
-2. После установки выполните команду в cmd:
+1. Install Ollama by following the instructions on [official website](https://ollama.com/)
+2. After installation, run the command in cmd:
     ```ollama run llava```
-3. Перейдите в папку проекта и установите необходимые зависимости:
+3. Go to your project folder and install the required dependencies:
     ```npm install```
-4. Находясь в папке проекта, запустите программу командой:
+4. While in the project folder, run the program with the command:
     ```node server.js```
-5. Интерфейс приложения будет доступен по адресу ```http://localhost:3000/``` 
+5. The application interface will be available at ```http://localhost:3000/```
 
-## Оригинальный автор
+## Contacts
 
-Проект основан на идее и наработках Tim Paul.
-Исходный код и другие материалы можно найти на его [GitHub](https://github.com/timpaul/form-extractor-prototype)
+The project is based on the idea and developments of Tim Paul.
+Source code and other materials can be found on his [GitHub](https://github.com/timpaul/form-extractor-prototype)
+
+To ask any question, [message to me](https://t.me/iron66)
