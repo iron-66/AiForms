@@ -149,16 +149,17 @@ async function sendToLLM(llm, req, res) {
   }
 }
 
-// Функция для вызова API Ollama с путем к изображению и получения извлеченных вопросов формы
+// Функция для вызова API Ollama с путем к изображению и получения извлеченных вопросов формы ollama run llava:34b
 async function callOllama(imagePath) {
   return new Promise((resolve, reject) => {
-    const ollama = spawn('ollama', ['run', 'llava'], { shell: true });
+    const ollama = spawn('ollama', ['run', 'llava:34b'], { shell: true });
     let output = '';
 
     console.log(`Ollama launched successfully`);
 
     ollama.stdout.on('data', (data) => {
       output += data.toString();
+      console.log(output);
     });
 
     ollama.on('close', (code) => {
