@@ -1,33 +1,28 @@
-This is an image of a form. Please analyze the form and output all the questions present in the form as a JSON array of objects. The JSON should have a key "pages" which contains an array of questions, and each question should have the following keys:
+This is an text, that was imported from a form. Please analyze the text and output all the questions present in the form as a JSON array of objects. The JSON should have a key "pages" which contains an array of questions, and each question should have the following keys:
 - "id": The unique identifier of the question as shown on the form.
 - "question_text": The exact text of the question as it appears on the form.
 - "hint_text": Any hint or additional information provided for the question, or null if there is no hint text.
 - "answer_type": The type of answer expected for the question. Possible values are "number", "email", "name", "national_insurance_number", "phone_number", "organisation_name", "address", "date", "selection", "text".
 
-Here is an example of the JSON structure:
+Here is an example of the JSON structure of your answer:
 
 {
   "pages": [
     {
-      "id": 36,
-      "question_text": "Child's full name including last or family name",
-      "hint_text": "As shown on their birth or adoption certificate.",
-      "answer_type": "name"
+      "id": 1,
+      "question_text": example,
+      "hint_text": example,
+      "answer_type": text
     },
-    {
-      "id": 37,
-      "question_text": "Is this child male or female?",
-      "hint_text": null,
-      "answer_type": "selection"
-    },
-    ...
   ]
 }
 
 Note:
-- Only extract questions that are explicitly shown in the image.
+- Only extract questions that are explicitly shown in the initial text.
 - Do not generate questions that are not present in the form.
 - If a question is divided into multiple parts or has multiple answers, include each part or answer as a separate question in the JSON.
 - Ensure that the "id" values correspond to the identifiers as they appear on the form.
+- Language is English or Russian.
+- Don't write notes about your results, JSON array only!
 
-Analyze the provided image and generate a JSON array of objects containing all the questions from the form with the specified structure.
+Analyze the provided text and generate a JSON array of objects containing all the questions from the form with the specified structure.

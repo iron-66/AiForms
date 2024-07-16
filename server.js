@@ -9,6 +9,7 @@ import { performance } from 'perf_hooks';
 import { spawn } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import Tesseract from 'tesseract.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -117,9 +118,13 @@ async function sendToLLM(llm, req, res) {
     const imagePath = `${savePath}/page.${pageNum}.jpeg`;
     var startTime = performance.now();
 
+    // Распознавание текста на изображении с помощью Tesseract
+    const ocrResult = await recognizeText(imagePath);
+
+    // Передача распознанного текста в модель LLM
     let result;
     if (llm === 'Ollama') {
-      result = await callOllama(imagePath);
+      result = await callOllama(ocrResult);
     } else {
       throw new Error('Unsupported LLM');
     }
@@ -149,10 +154,25 @@ async function sendToLLM(llm, req, res) {
   }
 }
 
-// Функция для вызова API Ollama с путем к изображению и получения извлеченных вопросов формы ollama run llava:34b
-async function callOllama(imagePath) {
+// Функция для распознавания текста на изображении с помощью Tesseract
+async function recognizeText(imagePath) {
   return new Promise((resolve, reject) => {
-    const ollama = spawn('ollama', ['run', 'llava:34b'], { shell: true });
+    Tesseract.recognize(imagePath, 'rus+eng', {
+      logger: m => console.log(m),
+    })
+      .then(({ data: { text } }) => {
+        resolve(text);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
+
+// Функция для вызова API Ollama с распознанным текстом
+async function callOllama(text) {
+  return new Promise((resolve, reject) => {
+    const ollama = spawn('ollama', ['run', 'aya'], { shell: true });
     let output = '';
 
     console.log(`Ollama launched successfully`);
@@ -174,7 +194,7 @@ async function callOllama(imagePath) {
     });
 
     const prompt = fs.readFileSync('data/ollama_prompt.txt', 'utf8');
-    ollama.stdin.write(`${prompt} ${imagePath}\n`);
+    ollama.stdin.write(`${prompt} ${text}\n`);
     ollama.stdin.end();
   });
 }
