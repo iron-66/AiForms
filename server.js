@@ -10,14 +10,17 @@ import { spawn } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Tesseract from 'tesseract.js';
+import axios from 'axios';
+import https from 'https';
+import { v4 as uuidv4 } from 'uuid';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-frontend/dist/govuk/assets')));
+app.use('/assets', express.static(path.join(dirname, '/node_modules/govuk-frontend/dist/govuk/assets')));
 nunjucks.configure(['app/views', 'node_modules/govuk-frontend/dist/'], {
   autoescape: true,
   express: app,
@@ -38,6 +41,35 @@ var storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+
+const getBearerToken = async () => {
+  const url = process.env.SBER_URL;
+  const authData = process.env.SBER_AUTH_DATA;
+
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'application/json',
+    'RqUID': uuidv4(),
+    'Authorization': `Basic ${authData}`
+  };
+
+  const data = `scope=${process.env.SBER_SCOPE}`;
+
+  const agent = new https.Agent({
+    rejectUnauthorized: false
+  });
+
+  try {
+    const response = await axios.post(url, data, {
+      headers,
+      httpsAgent: agent
+    });
+    return response.data.access_token;
+  } catch (error) {
+    console.error('Error in getting Bearer token:', error);
+    throw new Error('Error in getting Bearer token');
+  }
+};
 
 // Обработка загрузки файла
 app.post('/uploadFile', upload.single('fileUpload'), async (req, res) => {
@@ -103,8 +135,120 @@ app.get('/delete/:formId', async (req, res) => {
 // Извлечение вопросов формы
 app.get('/extractForm/:formId/:pageNum/', async (req, res) => {
   const llm = 'Ollama';
-  return sendToLLM(llm, req, res);
+  //return sendToLLM(llm, req, res);
+  return sendToGigaChat(req, res);
 });
+
+// Отправка данных в GigaChat API
+async function sendToGigaChat(req, res) {
+  const llm = 'GigaChat';
+  const formId = req.params.formId;
+  var savePath = './public/results/form-' + formId;
+  const pageNum = Number(req.params.pageNum);
+
+  try {
+    console.log('Sending data to ' + llm);
+
+    const imagePath = `${savePath}/page.${pageNum}.jpeg`;
+    var startTime = performance.now();
+
+    // Распознавание текста на изображении с помощью Tesseract
+    const ocrResult = await recognizeText(imagePath);
+
+    // Получение Bearer токена
+    const bearerToken = await getBearerToken();
+
+    // Чтение промпта
+    const promptPath = path.join(dirname, 'data', 'gigachat_prompt.txt');
+    const prompt = fs.readFileSync(promptPath, 'utf8');
+
+    // Комбинирование содержимого промпта и распознанного текста
+    const combinedContent = `${prompt}\n\n${ocrResult}`;
+
+    // Передача распознанного текста в модель LLM
+    let result;
+    if (llm === 'GigaChat') {
+      result = await callGigaChat(bearerToken, combinedContent);
+    } else {
+      throw new Error('Unsupported LLM');
+    }
+
+    var endTime = performance.now();
+
+    console.log(`Process took ${(endTime - startTime) / 1000} seconds`);
+    let ans = JSON.parse(result.choices[0].message.content);
+    console.log(ans);
+
+    const formJson = loadFileData(formId);
+
+    var index = 0;
+    for (let i = 0; i < pageNum - 1; i++) {
+      index += formJson.formStructure[i];
+    }
+
+    var index = arraySum(formJson.formStructure, 0, pageNum - 1);
+    formJson.pages.splice(index, 0, ...ans.pages);
+
+    formJson.formStructure.splice(pageNum - 1, 1, ans.pages.length);
+
+    fs.writeFileSync(savePath + '/form.json', JSON.stringify(formJson, null, 2));
+
+    res.redirect('/results/form-' + formId + '/' + pageNum);
+  } catch (error) {
+    console.error('Error in GigaChat API call:', error);
+    return res.status(500).send('Error processing the request');
+  }
+}
+
+// Функция для распознавания текста на изображении с помощью Tesseract
+async function recognizeText(imagePath) {
+  return new Promise((resolve, reject) => {
+    Tesseract.recognize(imagePath, 'rus+eng', {
+      logger: m => console.log(m),
+    })
+      .then(({ data: { text } }) => {
+        resolve(text);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
+
+// Функция для вызова API GigaChat с распознанным текстом
+async function callGigaChat(bearerToken, text) {
+  const url = 'https://gigachat.devices.sberbank.ru/api/v1/chat/completions';
+  const data = {
+    model: 'GigaChat',
+    messages: [
+      {
+        role: 'user',
+        content: text
+      }
+    ],
+    stream: false,
+    repetition_penalty: 1
+  };
+
+  const agent = new https.Agent({
+    rejectUnauthorized: false
+  });
+
+  try {
+    const response = await axios.post(url, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${bearerToken}`
+      },
+      httpsAgent: agent
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error in GigaChat API call:', error);
+    throw new Error('Error in GigaChat API call');
+  }
+}
 
 // Отправка данных в LLM
 async function sendToLLM(llm, req, res) {
@@ -152,21 +296,6 @@ async function sendToLLM(llm, req, res) {
     console.error('Error in Ollama API call:', error);
     return res.status(500).send('Error processing the request');
   }
-}
-
-// Функция для распознавания текста на изображении с помощью Tesseract
-async function recognizeText(imagePath) {
-  return new Promise((resolve, reject) => {
-    Tesseract.recognize(imagePath, 'rus+eng', {
-      logger: m => console.log(m),
-    })
-      .then(({ data: { text } }) => {
-        resolve(text);
-      })
-      .catch(err => {
-        reject(err);
-      });
-  });
 }
 
 // Функция для вызова API Ollama с распознанным текстом

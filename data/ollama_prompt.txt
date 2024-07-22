@@ -1,8 +1,8 @@
-This is an text, that was imported from a form. Please analyze the text and output all the questions present in the form as a JSON array of objects. The JSON should have a key "pages" which contains an array of questions, and each question should have the following keys:
+Analyze the following text and extract all the questions present in the form. Output the questions as a JSON array of objects. The JSON should have a key "pages" which contains an array of questions, and each question should have the following keys:
 - "id": The unique identifier of the question as shown on the form.
 - "question_text": The exact text of the question as it appears on the form.
 - "hint_text": Any hint or additional information provided for the question, or null if there is no hint text.
-- "answer_type": The type of answer expected for the question. Possible values are "number", "email", "name", "national_insurance_number", "phone_number", "organisation_name", "address", "date", "selection", "text".
+- "answer_type": The type of answer expected for the question. Possible values are "number", "email", "phone_number", "date", "selection", "text".
 
 Here is an example of the JSON structure of your answer:
 
@@ -10,9 +10,9 @@ Here is an example of the JSON structure of your answer:
   "pages": [
     {
       "id": 1,
-      "question_text": example,
-      "hint_text": example,
-      "answer_type": text
+      "question_text": "example",
+      "hint_text": "example",
+      "answer_type": "text"
     },
   ]
 }
