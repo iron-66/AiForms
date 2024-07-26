@@ -284,14 +284,28 @@ export default {
 }
 
 .git-link {
+    position: relative;
     color: #3092DE;
     outline: none;
     text-decoration: none;
     padding: 2px 1px 0;
-    transition: color 0.3s;
+    cursor: pointer;
 }
 
-.git-link:hover {
-    border-bottom: 3px solid;
+.git-link:after {
+    content: "";
+    position: absolute;
+	display: block;
+	left: 0;
+	width: 0;
+	height: 2px;
+    border-radius: 1px;
+	background-color: #3092DE;
+	transition: width 0.3s ease-out;
+}
+
+.git-link:hover:after,
+.git-link:focus:after {
+	width: 100%;
 }
 </style>
