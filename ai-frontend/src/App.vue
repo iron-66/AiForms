@@ -20,6 +20,7 @@ export default {
 #app {
   background-color: #F5F6FF;
   display: flex;
+  z-index: 0;
 }
 
 @font-face {

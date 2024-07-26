@@ -91,10 +91,10 @@ export default {
     position: relative;
     border-radius: 14px;
     background: #F5F6FF;
-    transition: color 0.3s, font-weight 0.3s;
+    transition: color 0.3s;
 }
 
-.navigation li:hover::before {
+.navigation li::before {
     content: "";
     position: absolute;
     left: -2px;
@@ -104,10 +104,18 @@ export default {
     background: linear-gradient(to right, #50CE86, #6DB7F1);
     border-radius: 16px;
     z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.2s;
+    transform: scaleX(1.05) scaleY(1.2);
+}
+
+.navigation li:hover::before {
+    opacity: 1;
+    transform: scale(1);
 }
 
 .navigation li:hover {
-    font-weight: bold;
+    color: #000000;
 }
 
 .icon {
