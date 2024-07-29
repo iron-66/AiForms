@@ -18,7 +18,6 @@ export default {
 
 <style>
 #app {
-  background-color: #F5F6FF;
   display: flex;
   z-index: 0;
 }
@@ -43,6 +42,7 @@ export default {
 
 body {
   font-family: 'Comfortaa', sans-serif;
+  background-color: #F5F6FF;
 }
 
 </style>
