@@ -1,15 +1,13 @@
 <template>
 <div class="create-form">
     <div class="central-panel">
-        <div class="form-header">
-            <h1>Создать форму</h1>
-            <img src="../assets/images/Create logo.png" alt="Создать форму">
-            <button class="process-button">обработать</button>
-        </div>
+        <h1 class="create-form-header">Создать форму</h1>
+        <img src="../assets/images/Create logo.png" alt="Создать форму" class="create-form-logo">
+        <button class="process-button">обработать</button>
     </div>
     <div class="upload-window">
-        <p>Для выбора документа нажмите сюда или перетащите файл</p>
-        <p class="supported-formats">поддерживаемые форматы: doc, docx, jpg, jpeg, pdf, png</p>
+        <p>Для выбора документа нажмите сюда<br>или перетащите файл</p>
+        <p class="supported-formats">поддерживаемые форматы:<br>doc, docx, jpg, jpeg, pdf, png</p>
         <input type="file" class="file-input" />
     </div>
 </div>
@@ -26,34 +24,32 @@ export default {
     display: flex;
     margin-left: 310px;
     background-color: #F5F6FF;
-    display: flex;
 }
 
 .central-panel {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 345px;
     height: 533px;
+    margin-top: 170px;
+    margin-left: 130px;
 }
 
-.form-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.form-header h1 {
+.create-form-header {
     font-size: 40px;
     font-weight: bold;
     color: #303030;
-    margin-right: 20px;
 }
 
-.form-header img {
+.create-form-logo {
+
     width: 286px;
     height: 267px;
 }
 
 .process-button {
+    margin-top: 80px;
     background-color: #50CE86;
     width: 270px;
     height: 70px;
