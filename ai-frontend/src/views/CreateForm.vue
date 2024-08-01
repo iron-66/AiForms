@@ -6,7 +6,7 @@
         <button class="process-button">обработать</button>
     </div>
     <div class="upload-window">
-        <p>Для выбора документа нажмите сюда<br>или перетащите файл</p>
+        <p class="upload-description">Для выбора документа нажмите сюда<br>или перетащите файл</p>
         <p class="supported-formats">поддерживаемые форматы:<br>doc, docx, jpg, jpeg, pdf, png</p>
         <input type="file" class="file-input" />
     </div>
@@ -23,7 +23,6 @@ export default {
 .create-form {
     display: flex;
     margin-left: 310px;
-    background-color: #F5F6FF;
 }
 
 .central-panel {
@@ -67,24 +66,46 @@ export default {
     background-color: #6DB7F1;
 }
 
-.form-body {
-    background-color: #fff;
-    padding: 40px;
-    border-radius: 14px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
+.upload-window {
+    margin-top: 115px;
+    margin-left: 130px;
+    width: 810px;
+    height: 685px;
+    position: relative;
+    background: #F5F6FF;
+    border-radius: 46px;
 }
 
-.form-body p {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 10px;
+.upload-window::before {
+    content: "";
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    background: linear-gradient(to right, #50CE86, #6DB7F1);
+    border-radius: 50px;
+    z-index: -1;
+}
+
+.upload-description {
+    width: 650px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #303030;
+    text-align: center;
+    margin: auto;
+    margin-top: 270px;
 }
 
 .supported-formats {
-    font-size: 14px;
+    width: 355px;
+    font-size: 20px;
     color: #777;
-    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin: auto;
+    margin-top: 20px;
 }
 
 .file-input {
