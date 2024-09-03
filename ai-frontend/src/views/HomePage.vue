@@ -2,7 +2,7 @@
 <div class="home-page">
     <div class="main-content">
         <div class="card-group">
-            <div class="card green">
+            <div class="card green" @click="goToPage('/create-form')">
                 <div class="card-title">Создать форму</div>
                 <img src="../assets/images/Create form tile.png" alt="Создать форму из PDF" class="card-icon">
             </div>
@@ -10,7 +10,7 @@
                 <div class="card-title">Экспорт<br>в PDF</div>
                 <img src="../assets/images/Export to PDF tile.png" alt="Экспорт в PDF" class="card-icon">
             </div>
-            <div class="card purple">
+            <div class="card purple" @click="goToPage('/my-forms')">
                 <div class="card-title">Мои формы</div>
                 <img src="../assets/images/My forms tile.png" alt="Мои формы" class="card-icon">
             </div>
@@ -68,7 +68,12 @@
 
 <script>
 export default {
-    name: 'HomePage'
+    name: 'HomePage',
+    methods: {
+    goToPage(route) {
+      this.$router.push(route);
+    }
+  }
 }
 </script>
 
@@ -103,6 +108,7 @@ export default {
     align-items: center;
     box-shadow: inset 12px 12px 20px rgba(255, 255, 255, 0.25);
     position: relative;
+    cursor: pointer;
 }
 .green {
     background-color: #50CE86;

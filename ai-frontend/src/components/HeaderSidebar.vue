@@ -69,6 +69,7 @@ export default {
     width: 216px;
     height: 71px;
     margin: 55px auto 60px 46px;
+    cursor: pointer;
 }
 
 .navigation {

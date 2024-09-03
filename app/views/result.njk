@@ -27,7 +27,7 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-one-half">
 
-  <h2 class="govuk-heading-m">Original file</h2>
+  <h2 class="govuk-heading-m">Исходный файл</h2>
 
   {% include "doc-pagination.njk" %}
 
@@ -38,14 +38,14 @@
   </div>
   <div class="govuk-grid-column-one-half">
 
-  <h2 class="govuk-heading-m">Extracted form</h2>
+  <h2 class="govuk-heading-m">Обработанная форма</h2>
 
   {% set formHtml %}
 
   {% if fileData.formStructure[pageNum-1] == 0 %}
 
    <div class="form-extraction-panel">
-    <h3 class="govuk-heading-s">Page {{pageNum}}</h3>
+
 
         {{ govukButton({
           id: 'extract-form-button',
@@ -73,14 +73,14 @@
   {{ govukTabs({
     items: [
       {
-        label: "Form",
+        label: "Форма",
         id: "form",
         panel: {
           html: formHtml
         }
       },
       {
-        label: "List",
+        label: "Список вопросов",
         id: "list",
         panel: {
           html: listHtml
