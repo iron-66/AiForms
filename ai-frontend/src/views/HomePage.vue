@@ -70,10 +70,10 @@
 export default {
     name: 'HomePage',
     methods: {
-    goToPage(route) {
-      this.$router.push(route);
-    }
-  }
+        goToPage(route) {
+            this.$router.push(route);
+        },
+    },
 }
 </script>
 

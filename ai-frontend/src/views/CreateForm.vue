@@ -3,19 +3,61 @@
     <div class="central-panel">
         <h1 class="create-form-header">Создать форму</h1>
         <img src="../assets/images/Create logo.png" alt="Создать форму" class="create-form-logo">
-        <button class="process-button">обработать</button>
+        <button class="process-button" :disabled="!selectedFile" @click="processFile">обработать</button>
     </div>
-    <div class="upload-window">
-        <p class="upload-description">Для выбора документа нажмите сюда<br>или перетащите файл</p>
+    <div class="upload-window" @click="triggerFileInput" @dragover.prevent @drop.prevent="handleFileDrop">
+        <p v-if="!selectedFile" class="upload-description">Для выбора документа нажмите сюда<br>или перетащите файл</p>
+        <p v-else class="upload-description">Файл "{{ selectedFile.name }}" загружен<br><br>Нажмите сюда, чтобы выбрать другой</p>
         <p class="supported-formats">поддерживаемые форматы:<br>doc, docx, jpg, jpeg, pdf, png</p>
-        <input type="file" class="file-input" />
+        <input type="file" class="file-input" @change="handleFileUpload" ref="fileInput"/>
     </div>
 </div>
 </template>
   
 <script>
+import axios from 'axios';
+
 export default {
-    name: 'CreateForm'
+    name: 'CreateForm',
+    data() {
+        return {
+            selectedFile: null,
+        };
+    },
+    methods: {
+        triggerFileInput() {
+            this.$refs.fileInput.click();
+        },
+        handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                this.selectedFile = file;
+            }
+        },
+        handleFileDrop(event) {
+            const file = event.dataTransfer.files[0];
+            if (file) {
+                this.selectedFile = file;
+            }
+        },
+        async processFile() {
+            const formData = new FormData();
+            formData.append('fileUpload', this.selectedFile);
+
+            try {
+                const uniqueId = Date.now();
+                await axios.post('http://localhost:3000/uploadFile', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                console.log('downloaded');
+                this.$router.push(`/result/${uniqueId}`);
+            } catch (error) {
+                console.error('Error uploading file:', error);
+            }
+        }
+    },
 }
 </script>
   
@@ -42,7 +84,6 @@ export default {
 }
 
 .create-form-logo {
-
     width: 286px;
     height: 267px;
 }
@@ -66,6 +107,11 @@ export default {
     background-color: #6DB7F1;
 }
 
+.process-button:disabled {
+    background-color: #B3B3B3;
+    cursor: not-allowed;
+}
+
 .upload-window {
     margin-top: 115px;
     margin-left: 130px;
@@ -74,6 +120,7 @@ export default {
     position: relative;
     background: #F5F6FF;
     border-radius: 46px;
+    cursor: pointer;
 }
 
 .upload-window::before {

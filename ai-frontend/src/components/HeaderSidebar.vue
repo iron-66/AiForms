@@ -1,8 +1,8 @@
 <template>
 <div class="header-sidebar">
-    <img src="../assets/images/Logo beta.png" alt="AiForms beta" class="logo" @click="goHome">
+    <img src="../assets/images/Logo beta.png" alt="AiForms beta" class="logo" @click="goToPage('/')">
     <ul class="navigation">
-        <li>
+        <li @click="goToPage('/create-form')">
             <img src="../assets/images/Create form icon.png" alt="Создать форму из PDF" class="icon">
             Создать форму из PDF
         </li>
@@ -10,7 +10,7 @@
             <img src="../assets/images/Export to PDF icon.png" alt="Экспорт в PDF" class="icon">
             Экспорт в PDF
         </li>
-        <li>
+        <li @click="goToPage('/my-forms')">
             <img src="../assets/images/My forms icon.png" alt="Мои формы" class="icon">
             Мои формы
         </li>
@@ -18,7 +18,7 @@
             <img src="../assets/images/My PDF icon.png" alt="Мои PDF" class="icon">
             Мои PDF
         </li>
-        <li>
+        <li @click="goToContacts">
             <img src="../assets/images/Contacts icon.png" alt="Контакты" class="icon">
             Контакты
         </li>
@@ -32,27 +32,24 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
-
 export default {
-  name: 'HeaderSidebar',
-  setup() {
-    const router = useRouter();
-
-    const goHome = () => {
-      router.push('/');
-    };
-
-    const navigateTo = (route) => {
-      router.push(route);
-    };
-
-    return {
-      goHome,
-      navigateTo,
-    };
-  },
-};
+    methods: {
+        goToPage(route) {
+            this.$router.push(route);
+        },
+        goToContacts() {
+            this.$router.push('/').then(() => {
+                this.scrollToBottom();
+            });
+        },
+        scrollToBottom() {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+    }
+}
 </script>
   
 <style scoped>

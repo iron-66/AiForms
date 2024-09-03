@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../views/HomePage.vue';
 import CreateForm from '../views/CreateForm.vue'
 import MyForms from '../views/MyForms.vue'
+import ResultPage from '../views/ResultPage.vue';
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/my-forms',
     name: 'MyForms',
     component: MyForms
+  },
+  {
+    path: '/result/:id',
+    name: 'ResultPage',
+    component: ResultPage
   },
 ];
 
