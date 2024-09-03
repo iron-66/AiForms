@@ -45,14 +45,19 @@ export default {
             formData.append('fileUpload', this.selectedFile);
 
             try {
-                const uniqueId = Date.now();
-                await axios.post('http://localhost:3000/uploadFile', formData, {
+                const response = await axios.post('http://localhost:3000/uploadFile', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
+
+                const redirectUrl = response.request.responseURL;
+                const uniqueId = redirectUrl.match(/form-(\d+)/)[1];
+
                 console.log('downloaded');
-                this.$router.push(`/result/${uniqueId}`);
+                setTimeout(() => {
+                    this.$router.push(`/results/form-${uniqueId}`);
+                }, 500);
             } catch (error) {
                 console.error('Error uploading file:', error);
             }

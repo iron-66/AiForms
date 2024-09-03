@@ -21,7 +21,7 @@ const routes = [
     component: MyForms
   },
   {
-    path: '/result/:id',
+    path: '/results/:id',
     name: 'ResultPage',
     component: ResultPage
   },

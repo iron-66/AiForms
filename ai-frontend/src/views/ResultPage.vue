@@ -2,7 +2,7 @@
 <div class="result-page">
     <div class="central-panel">
         <h1 class="result-page-header">Результат</h1>
-        <div class="document-preview">Здесь должен быть предпросмотр формы</div>
+        <img :src="imageSrc" alt="Предпросмотр документа" class="document-preview">
     </div>
     <div class="result-window">
     </div>
@@ -12,6 +12,15 @@
 <script>
 export default {
     name: 'ResultPage',
+    data() {
+        return {
+        imageSrc: '',
+        };
+    },
+    created() {
+        const pageId = this.$route.params.id;
+        this.imageSrc = require(`../../../public/results/${pageId}/page.1.jpeg`);
+    },
 }
 </script>
     
@@ -65,4 +74,3 @@ export default {
     z-index: -1;
 }
 </style>
-    
