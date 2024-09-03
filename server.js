@@ -13,11 +13,13 @@ import Tesseract from 'tesseract.js';
 import axios from 'axios';
 import https from 'https';
 import { v4 as uuidv4 } from 'uuid';
+import cors from 'cors';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/assets', express.static(path.join(dirname, '/node_modules/govuk-frontend/dist/govuk/assets')));
