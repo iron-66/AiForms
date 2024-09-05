@@ -5,13 +5,50 @@
         <img src="../assets/images/My forms logo.png" alt="Создать форму" class="my-forms-logo">
     </div>
     <div class="archive-panel">
+        <div v-for="folder in folders" :key="folder" class="archive-card" @click="goToFormResult(folder)">
+            <img :src="`http://localhost:3000/results/${folder}/page.1.jpeg`" alt="Предпросмотр документа" />
+            <button class="delete-button" @click.stop="deleteForm(folder)">Удалить</button>
+        </div>
     </div>
 </div>
 </template>
   
 <script>
+import axios from 'axios';
+
 export default {
     name: 'CreateForm',
+    data() {
+        return {
+            folders: []
+        };
+    },
+    created() {
+        axios.get('http://localhost:3000/api/folders')
+            .then(response => {
+                console.log(response.data);
+                this.folders = response.data;
+            })
+            .catch(error => {
+                console.error('Ошибка при загрузке папок:', error);
+            });
+    },
+    methods: {
+        goToFormResult(folder) {
+            this.$router.push(`/results/${folder}`);
+        },
+        deleteForm(folder) {
+            const formId = folder.split('-')[1];
+
+            axios.get(`http://localhost:3000/delete/${formId}`)
+                .then(() => {
+                    this.folders = this.folders.filter(f => f !== folder);
+                })
+                .catch(error => {
+                    console.error('Ошибка при удалении формы:', error);
+                });
+        }
+    }
 }
 </script>
 
@@ -29,6 +66,7 @@ export default {
     height: 533px;
     margin-top: 170px;
     margin-left: 130px;
+    position: fixed;
 }
 
 .my-forms-header {
@@ -45,17 +83,19 @@ export default {
 
 .archive-panel {
     margin-top: 115px;
-    margin-left: 130px;
+    margin-left: 610px;
     width: 790px;
     height: 685px;
-    position: relative;
-    background: #F5F6FF;
-    border-radius: 46px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
 }
 
 .archive-card {
     width: 230px;
     height: 300px;
+    position: relative;
+    cursor: pointer;
 }
 
 .archive-card::before {
@@ -68,6 +108,36 @@ export default {
     background: linear-gradient(to right, #50CE86, #6DB7F1);
     border-radius: 50px;
     z-index: -1;
+}
+
+.archive-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 46px;
+}
+
+.delete-button {
+    width: 115px;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    font-family: Comfortaa;
+    font-size: 16px;  
+    background-color: #E85353;
+    box-shadow: inset 12px 12px 20px rgba(255, 255, 255, 0.25);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s;
+    transform: translateX(-50%);
+}
+
+.archive-card:hover .delete-button {
+    opacity: 1;
 }
 
 .upload-description {

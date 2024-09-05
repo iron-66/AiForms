@@ -125,6 +125,21 @@ app.post('/uploadFile', upload.single('fileUpload'), async (req, res) => {
   res.redirect('/results/form-' + now + '/1');
 });
 
+// Получение всех папок с результатами обработки
+app.get('/api/folders', (req, res) => {
+  const resultsPath = path.join(dirname, 'public/results');
+  
+  fs.readdir(resultsPath, (err, files) => {
+    if (err) {
+      return res.status(500).json({ error: 'Не удалось получить список папок' });
+    }
+
+    const folders = files.filter(file => fs.statSync(path.join(resultsPath, file)).isDirectory());
+    console.log(folders);
+    res.json(folders);
+  });
+});
+
 // Удаление формы
 app.get('/delete/:formId', async (req, res) => {
   const formId = req.params.formId;

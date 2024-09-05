@@ -2,7 +2,8 @@
 <div class="result-page">
     <div class="central-panel">
         <h1 class="result-page-header">Результат</h1>
-        <img :src="imageSrc" alt="Предпросмотр документа" class="document-preview">
+        <img v-if="imageExists" :src="imageSrc" alt="Предпросмотр документа" class="document-preview">
+        <div v-else>Изображение обрабатывается, пожалуйста, подождите...</div>
     </div>
     <div class="result-window">
     </div>
@@ -10,20 +11,32 @@
 </template>
       
 <script>
+import axios from 'axios';
+
 export default {
     name: 'ResultPage',
     data() {
         return {
         imageSrc: '',
+        imageExists: false,
         };
     },
-    created() {
+    async created() {
         const pageId = this.$route.params.id;
-        this.imageSrc = require(`../../../public/results/${pageId}/page.1.jpeg`);
+        this.imageSrc = `http://localhost:3000/results/${pageId}/page.1.jpeg`;
+
+        while (!this.imageExists) {
+            try {
+                await axios.get(this.imageSrc);
+                this.imageExists = true;
+            } catch {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+        }
     },
 }
 </script>
-    
+
 <style scoped>
 .result-page {
     display: flex;
@@ -49,6 +62,7 @@ export default {
 .document-preview {
     max-width: 366px;
     max-height: 524px;
+    border: 1px solid black;
 }
 
 .result-window {

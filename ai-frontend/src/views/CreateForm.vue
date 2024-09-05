@@ -55,9 +55,7 @@ export default {
                 const uniqueId = redirectUrl.match(/form-(\d+)/)[1];
 
                 console.log('downloaded');
-                setTimeout(() => {
-                    this.$router.push(`/results/form-${uniqueId}`);
-                }, 500);
+                this.$router.push(`/results/form-${uniqueId}`);
             } catch (error) {
                 console.error('Error uploading file:', error);
             }
