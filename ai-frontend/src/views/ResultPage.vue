@@ -150,14 +150,15 @@ button.active {
     margin-top: 30px;
     margin-left: 30px;
     border: 1px solid #5F5F5F;
+    border-radius: 15px;
     overflow-y: auto;
     overflow-x: auto;
-    padding: 15px;
+    padding: 25px;
     box-sizing: border-box;
 }
 
 .result::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
     height: 0px;
 }
 
@@ -165,7 +166,7 @@ button.active {
     -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
     background-color: #f9f9fd;
     border-radius: 10px;
-    margin: 5px;
+    margin: 20px;
 }
 
 .result::-webkit-scrollbar-thumb {
