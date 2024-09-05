@@ -129,7 +129,7 @@ export default {
     width: 115px;
     position: absolute;
     bottom: 10px;
-    left: 50%;
+    left: 25%;
     font-family: Comfortaa;
     font-size: 16px;  
     background-color: #E85353;
@@ -140,8 +140,12 @@ export default {
     border-radius: 15px;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.3s;
-    transform: translateX(-50%);
+    transition: opacity 0.3s, background-color 0.2s, transform 0.1s;
+}
+
+.delete-button:hover {
+    background-color: #d82a2a;
+    transform: scale(1.02);
 }
 
 .archive-card:hover .delete-button {
