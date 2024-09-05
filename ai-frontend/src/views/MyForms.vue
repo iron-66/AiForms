@@ -25,13 +25,13 @@ export default {
     },
     created() {
         axios.get('http://localhost:3000/api/folders')
-            .then(response => {
-                console.log(response.data);
-                this.folders = response.data;
-            })
-            .catch(error => {
-                console.error('Ошибка при загрузке папок:', error);
-            });
+        .then(response => {
+            console.log(response.data);
+            this.folders = response.data;
+        })
+        .catch(error => {
+            console.error('Ошибка при загрузке папок:', error);
+        });
     },
     methods: {
         goToFormResult(folder) {
@@ -41,12 +41,12 @@ export default {
             const formId = folder.split('-')[1];
 
             axios.get(`http://localhost:3000/delete/${formId}`)
-                .then(() => {
-                    this.folders = this.folders.filter(f => f !== folder);
-                })
-                .catch(error => {
-                    console.error('Ошибка при удалении формы:', error);
-                });
+            .then(() => {
+                this.folders = this.folders.filter(f => f !== folder);
+            })
+            .catch(error => {
+                console.error('Ошибка при удалении формы:', error);
+            });
         }
     }
 }
@@ -108,6 +108,14 @@ export default {
     background: linear-gradient(to right, #50CE86, #6DB7F1);
     border-radius: 50px;
     z-index: -1;
+    transition: all 0.1s ease;
+}
+
+.archive-card:hover::before {
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
 }
 
 .archive-card img {
