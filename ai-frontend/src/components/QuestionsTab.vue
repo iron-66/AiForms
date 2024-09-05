@@ -42,21 +42,21 @@ export default {
 <style scoped>
 .question-block {
     margin-bottom: 20px;
+    font-weight: bold;
 }
 
 .question {
-
-    font-weight: bold;
+    font-size: 18px;
+    color: #303030;
 }
 
 h3 {
-    font-weight: bold;
     color: #303030;
 }
 
 .description {
+    font-size: 18px;
     color: #777;
-    font-weight: bold;
 }
 
 .separator {
