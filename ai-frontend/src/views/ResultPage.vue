@@ -96,8 +96,8 @@ export default {
     width: 810px;
     height: 685px;
     position: relative;
-    background: #F5F6FF;
     border-radius: 46px;
+    z-index: 0;
 }
 
 .result-window::before {
@@ -109,7 +109,19 @@ export default {
     bottom: -4px;
     background: linear-gradient(to right, #50CE86, #6DB7F1);
     border-radius: 50px;
-    z-index: -1;
+    z-index: -3;
+}
+
+.result-window::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #F5F6FF;
+    border-radius: 46px;
+    z-index: -2;
 }
 
 .tabs {
