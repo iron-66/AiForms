@@ -2,35 +2,35 @@
 <div class="form-container">
     <div class="header">
         <img src="../assets/images/Logo beta.png" alt="AiForms Logo" class="logo" />
-        <button @click="openInNewTab" class="open-link-btn">Открыть в отдельной вкладке</button>
+        <button @click="openInNewTab" class="gradient-btn">Открыть в отдельной вкладке</button>
     </div>
-    <div class="form-content" v-if="questions.length">
+    <div class="form-content" v-if="questions.length && !isCompleted">
         <h2>Вопрос {{ currentQuestionIndex + 1 }}</h2>
         <h3>{{ currentQuestion.question_text }}</h3>
-        <p>{{ currentQuestion.hint_text }}</p>
+        <p v-if="currentQuestion.answer_type !== 'text'">{{ currentQuestion.hint_text }}</p>
 
         <div class="input-field">
             <template v-if="currentQuestion.answer_type === 'text'">
-                <input type="text" v-model="formData[currentQuestionIndex]" />
+                <input type="text" v-model="formData[currentQuestionIndex]" :placeholder="currentQuestion.hint_text" />
             </template>
 
-            <template v-if="currentQuestion.type === 'number'">
+            <template v-if="currentQuestion.answer_type === 'number'">
                 <input type="number" v-model="formData[currentQuestionIndex]" />
             </template>
 
-            <template v-if="currentQuestion.type === 'email'">
+            <template v-if="currentQuestion.answer_type === 'email'">
                 <input type="email" v-model="formData[currentQuestionIndex]" />
             </template>
 
-            <template v-if="currentQuestion.type === 'phone_number'">
+            <template v-if="currentQuestion.answer_type === 'phone_number'">
                 <input type="tel" v-model="formData[currentQuestionIndex]" />
             </template>
 
-            <template v-if="currentQuestion.type === 'date'">
+            <template v-if="currentQuestion.answer_type === 'date'">
                 <input type="date" v-model="formData[currentQuestionIndex]" />
             </template>
 
-            <template v-if="currentQuestion.type === 'selection'">
+            <template v-if="currentQuestion.answer_type === 'selection'">
                 <select v-model="formData[currentQuestionIndex]">
                     <option v-for="(option, index) in currentQuestion.options" :key="index">{{ option }}</option>
                 </select>
@@ -38,10 +38,15 @@
         </div>
 
         <div class="form-navigation">
-            <button class="nav-btn" @click="prevQuestion" :disabled="currentQuestionIndex === 0">Назад</button>
-            <button class="nav-btn" @click="nextQuestion" :disabled="currentQuestionIndex === questions.length - 1">Далее</button>
+            <button class="gradient-btn" @click="prevQuestion" :disabled="currentQuestionIndex === 0">Назад</button>
+            <button class="gradient-btn" @click="nextQuestion">Далее</button>
         </div>
     </div>
+
+    <div class="form-completion" v-if="isCompleted">
+        <h2>Спасибо за ответ!<br>Результаты успешно записаны!</h2>
+    </div>
+
     <div v-else>
         Формы ещё не сгенерированы, пожалуйста, подождите...
     </div>
@@ -57,6 +62,7 @@ export default {
             questions: [],
             currentQuestionIndex: 0,
             formData: [],
+            isCompleted: false,
         };
     },
     computed: {
@@ -80,11 +86,22 @@ export default {
         nextQuestion() {
             if (this.currentQuestionIndex < this.questions.length - 1) {
                 this.currentQuestionIndex++;
+            } else {
+                this.completeForm();
             }
         },
         prevQuestion() {
             if (this.currentQuestionIndex > 0) {
                 this.currentQuestionIndex--;
+            }
+        },
+        async completeForm() {
+            this.isCompleted = true;
+            try {
+                await axios.post(`http://localhost:3000/saveAnswers/${this.$route.params.id}`, { answers: this.formData });
+                console.log('Результаты успешно сохранены');
+            } catch (error) {
+                console.error('Ошибка при сохранении ответов:', error);
             }
         },
         openInNewTab() {
@@ -114,30 +131,55 @@ export default {
     max-width: 150px;
 }
 
-.open-link-btn {
-    padding: 12px 22px;
+.gradient-btn {
+    padding: 10px 20px;
     position: relative;
-    background: #F5F6FF;
     border-radius: 17px;
     border: none;
+    background: #F5F6FF;
     color: #303030;
     font-weight: bold;
     font-size: 17px;
     font-family: Comfortaa;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background 0.5s ease;
 }
 
-.open-link-btn::before {
+.gradient-btn::before {
     content: "";
     position: absolute;
-    left: -4px;
-    top: -4px;
-    right: -4px;
-    bottom: -4px;
+    left: -2px;
+    top: -2px;
+    right: -2px;
+    bottom: -2px;
     background: linear-gradient(to right, #50CE86, #6DB7F1);
-    border-radius: 16px;
+    border-radius: 19px;
     z-index: -1;
+    transition: background 0.5s ease;
+}
+
+.gradient-btn:hover:not(:disabled) {
+    background: linear-gradient(to right, #50CE86, #6DB7F1);
+    color: #F5F6FF;
+    transition: background 0.5s ease;
+}
+
+.gradient-btn:disabled {
+    background: #e2e1e1;
+    cursor: not-allowed;
+}
+
+.gradient-btn:disabled::before {
+    content: "";
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: #e2e1e1;
+    border-radius: 19px;
+    z-index: -1;
+    transition: background 0.5s ease;
 }
 
 .form-content {
@@ -150,43 +192,36 @@ export default {
 }
 
 h2, h3, p {
-    margin: 10px 0; /* уменьшение отступов для заголовков и текста */
+    margin: 10px 0;
 }
 
 .input-field {
     margin: 20px 0;
+    width: 100%;
 }
 
 input, select {
-    padding: 10px;
-    font-size: 16px;
+    width: 100%;
+    padding: 15px;
+    font-size: 17px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 15px;
+    box-sizing: border-box;
+    font-family: Comfortaa;
 }
 
 .form-navigation {
     margin-top: 20px;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
 }
 
-.nav-btn {
-    padding: 10px 20px;
-    margin: 0 10px;
-    border: none;
-    background-color: #50ce86;
-    color: white;
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 15px;
-    transition: background-color 0.3s ease;
-}
-
-.nav-btn:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-.nav-btn:hover:not(:disabled) {
-    background-color: #6db7f1;
+.form-completion {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    text-align: center;
 }
 </style>
-  
