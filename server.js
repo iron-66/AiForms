@@ -73,7 +73,7 @@ const getBearerToken = async () => {
   }
 };
 
-// Обработка загрузки файла
+// Функция для загрузки и подготовки файла к обработке
 app.post('/uploadFile', upload.single('fileUpload'), async (req, res) => {
   const now = `${Date.now()}`;
   var savePath = './public/results/form-' + now;
@@ -125,7 +125,7 @@ app.post('/uploadFile', upload.single('fileUpload'), async (req, res) => {
   res.redirect('/results/form-' + now + '/1');
 });
 
-// Получение всех папок с результатами обработки
+// Функция для получения всех папок с результатами обработки
 app.get('/api/folders', (req, res) => {
   const resultsPath = path.join(dirname, 'public/results');
   
@@ -140,7 +140,7 @@ app.get('/api/folders', (req, res) => {
   });
 });
 
-// Удаление формы
+// Функция для удаления формы
 app.get('/delete/:formId', async (req, res) => {
   const formId = req.params.formId;
   fs.rmdirSync('./public/results/form-' + formId, {
@@ -149,14 +149,14 @@ app.get('/delete/:formId', async (req, res) => {
   res.redirect('/');
 });
 
-// Извлечение вопросов формы
+// Функция, позволяющая выбрать модель для последующей обработки данных
 app.get('/extractForm/:formId/:pageNum/', async (req, res) => {
-  const llm = 'Ollama';
+  //const llm = 'Ollama';
   //return sendToLLM(llm, req, res);
   return sendToGigaChat(req, res);
 });
 
-// Отправка данных в GigaChat API
+// Функция, отправляющая данные в GigaChat
 async function sendToGigaChat(req, res) {
   const llm = 'GigaChat';
   const formId = req.params.formId;
@@ -267,7 +267,7 @@ async function callGigaChat(bearerToken, text) {
   }
 }
 
-// Отправка данных в LLM
+// Функция, отправляющая данные в LLM
 async function sendToLLM(llm, req, res) {
   const formId = req.params.formId;
   var savePath = './public/results/form-' + formId;
@@ -344,6 +344,38 @@ async function callOllama(text) {
     ollama.stdin.end();
   });
 }
+
+// Функция для сохранения ответов из форм
+app.post('/saveAnswers/:formId', async (req, res) => {
+  const formId = req.params.formId;
+  const answers = req.body.answers;
+  const savePath = `./public/results/${formId}/answers`;
+  
+  // Создание папки answers, если она не существует
+  if (!fs.existsSync(savePath)) {
+    fs.mkdirSync(savePath);
+  }
+  
+  // Создание файла с уникальным именем
+  const timestamp = Date.now();
+  const filePath = `${savePath}/answers-${timestamp}.csv`;
+
+  // Преобразование данных в CSV-формат
+  const csvHeaders = Object.keys(answers[0]).join(',') + '\n';
+  const csvRows = answers.map(row => Object.values(row).join(',')).join('\n');
+  const csvContent = csvHeaders + csvRows;
+
+  try {
+    // Запись данных в файл
+    fs.writeFileSync(filePath, csvContent);
+    console.log(`Answers saved at ${filePath}`);
+    res.json({ message: 'Answers saved successfully!', filePath });
+  } catch (err) {
+    console.error('Error saving answers:', err);
+    res.status(500).json({ error: 'Error saving answers' });
+  }
+});
+
 
 // === THE USER INTERFACE === //
 
