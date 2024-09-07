@@ -53,12 +53,12 @@
         <p>Если у Вас есть вопросы или предложения, Вы можете<br>связаться со мной, а также посмотреть исходный код</p>
         <div class="links">
             <div class="link-element">
-                <img src="../assets/images/Telegram.png" alt="Telegram" class="social-icon">
-                <p>@iron66</p>
+                <a href="https://t.me/iron66"><img src="../assets/images/Telegram.png" alt="Telegram" class="social-icon"></a>
+                <p><a href="https://t.me/iron66" class="social-link">@iron66</a></p>
             </div>
             <div class="link-element">
-                <img src="../assets/images/Github.png" alt="Github" class="social-icon">
-                <p>iron-66</p>
+                <a href="https://github.com/iron-66/AiForms"><img src="../assets/images/Github.png" alt="Github" class="social-icon"></a>
+                <p><a href="https://github.com/iron-66/AiForms" class="social-link">iron-66</a></p>
             </div>
         </div>
         <p>Проект основан на идее и разработках Тима Пола<br>Исходный код и другие материалы можно найти на его <a href="https://github.com" class="git-link">GitHub</a></p>
@@ -283,10 +283,30 @@ export default {
 }
 
 .links p {
-    color: #303030;
     font-weight: bold;
     font-size: 30px;
     margin: auto auto auto 20px;
+}
+
+.social-link {
+    position: relative;
+    outline: none;
+    text-decoration: none;
+    color: #303030;
+    cursor: pointer;
+}
+
+.social-link:after {
+    content: "";
+    position: absolute;
+	display: block;
+	left: 0;
+	width: 0;
+	height: 2px;
+    border-radius: 1px;
+	background-color: #303030;
+    bottom: -5px;
+	transition: width 0.3s ease-out;
 }
 
 .git-link {
@@ -294,7 +314,6 @@ export default {
     color: #3092DE;
     outline: none;
     text-decoration: none;
-    padding: 2px 1px 0;
     cursor: pointer;
 }
 
@@ -310,6 +329,9 @@ export default {
 	transition: width 0.3s ease-out;
 }
 
+.link-element:hover .social-link:after,
+.social-link:hover:after,
+.social-link:focus:after,
 .git-link:hover:after,
 .git-link:focus:after {
 	width: 100%;
