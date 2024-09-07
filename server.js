@@ -376,6 +376,30 @@ app.post('/saveAnswers/:formId', async (req, res) => {
   }
 });
 
+const promptPath = path.join(dirname, 'data', 'gigachat_prompt.txt');
+const defaultPromptPath = path.join(dirname, 'data', 'default_prompt.txt');
+
+// Функция для получения текущего и дефолтного промпта
+app.get('/getPrompt', (req, res) => {
+  try {
+    const currentPrompt = fs.readFileSync(promptPath, 'utf8');
+    const defaultPrompt = fs.readFileSync(defaultPromptPath, 'utf8');
+    res.json({ currentPrompt, defaultPrompt });
+  } catch (error) {
+    res.status(500).json({ error: 'Не удалось загрузить промпт' });
+  }
+});
+
+// Функция для сохранения промпта
+app.post('/savePrompt', (req, res) => {
+  const { prompt } = req.body;
+  try {
+    fs.writeFileSync(promptPath, prompt, 'utf8');
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(500).json({ error: 'Не удалось сохранить промпт' });
+  }
+});
 
 // === THE USER INTERFACE === //
 

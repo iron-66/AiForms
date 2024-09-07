@@ -3,8 +3,8 @@
     <img src="../assets/images/Logo beta.png" alt="AiForms beta" class="logo" @click="goToPage('/')">
     <ul class="navigation">
         <li @click="goToPage('/create-form')">
-            <img src="../assets/images/Create form icon.png" alt="Создать форму из PDF" class="icon">
-            Создать форму из PDF
+            <img src="../assets/images/Create form icon.png" alt="Создать форму" class="icon">
+            Создать форму
         </li>
         <li>
             <img src="../assets/images/Export to PDF icon.png" alt="Экспорт в PDF" class="icon">
@@ -22,9 +22,9 @@
             <img src="../assets/images/Contacts icon.png" alt="Контакты" class="icon">
             Контакты
         </li>
-        <li>
-            <img src="../assets/images/For devs icon.png" alt="Для разработчиков" class="icon">
-            Для разработчиков
+        <li @click="goToPage('/settings')">
+            <img src="../assets/images/For devs icon.png" alt="Настройки" class="icon">
+            Настройки
         </li>
     </ul>
     <div class="sidebar-divider"></div>

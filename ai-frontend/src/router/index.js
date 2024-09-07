@@ -3,6 +3,7 @@ import HomePage from '../views/HomePage.vue';
 import CreateForm from '../views/CreateForm.vue'
 import MyForms from '../views/MyForms.vue'
 import ResultPage from '../views/ResultPage.vue';
+import SettingsPage from '../views/SettingsPage.vue';
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/results/:id',
     name: 'ResultPage',
     component: ResultPage
+  },
+  {
+    path: '/settings',
+    name: 'SettingsPage',
+    component: SettingsPage
   },
 ];
 
