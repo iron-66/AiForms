@@ -24,7 +24,7 @@ export default {
         };
     },
     created() {
-        axios.get('http://localhost:3000/api/folders')
+        axios.get('http://localhost:3000/getFolders')
         .then(response => {
             console.log(response.data);
             this.folders = response.data;

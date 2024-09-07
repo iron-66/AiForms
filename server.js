@@ -126,7 +126,7 @@ app.post('/uploadFile', upload.single('fileUpload'), async (req, res) => {
 });
 
 // Функция для получения всех папок с результатами обработки
-app.get('/api/folders', (req, res) => {
+app.get('/getFolders', (req, res) => {
   const resultsPath = path.join(dirname, 'public/results');
   
   fs.readdir(resultsPath, (err, files) => {
