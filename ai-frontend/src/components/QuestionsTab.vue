@@ -1,16 +1,11 @@
 <template>
 <div>
-    <div v-if="questions.length">
-        <div v-for="(question, index) in questions" :key="question.id" class="question-block">
-            <p class="question">Вопрос {{ index + 1 }}</p>
-            <h3>{{ question.question_text }}</h3>
-            <p class="description">Подсказка: {{ question.hint_text }}</p>
-            <p class="description">Тип: {{ question.answer_type }}</p>
-            <div v-if="index < questions.length - 1" class="separator"></div>
-        </div>
-    </div>
-    <div v-else>
-        Формы еще не сгенерированы, пожалуйста, подождите...
+    <div v-for="(question, index) in questions" :key="question.id" class="question-block">
+        <p class="question">Вопрос {{ index + 1 }}</p>
+        <h3>{{ question.question_text }}</h3>
+        <p class="description">Подсказка: {{ question.hint_text }}</p>
+        <p class="description">Тип: {{ question.answer_type }}</p>
+        <div v-if="index < questions.length - 1" class="separator"></div>
     </div>
 </div>
 </template>

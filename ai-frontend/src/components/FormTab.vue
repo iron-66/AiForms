@@ -46,10 +46,6 @@
     <div class="form-completion" v-if="isCompleted">
         <h2>Спасибо за ответ!<br>Результаты успешно записаны!</h2>
     </div>
-
-    <div v-if="!questions.length && !isCompleted">
-        Формы ещё не сгенерированы, пожалуйста, подождите...
-    </div>
 </div>
 </template>
 

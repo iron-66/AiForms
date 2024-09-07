@@ -6,12 +6,14 @@
         <div v-else>Изображение обрабатывается, пожалуйста, подождите...</div>
     </div>
     <div class="result-window">
-        <div class="tabs">
+        <div v-if="questions.length" class="tabs">
             <button :class="{ active: activeTab === 'form' }" @click="activeTab = 'form'">форма</button>
             <button :class="{ active: activeTab === 'questions' }" @click="activeTab = 'questions'">вопросы</button>
             <button :class="{ active: activeTab === 'json' }" @click="activeTab = 'json'">json</button>
         </div>
-        <component :is="activeTabComponent" class="result"></component>
+        <div class="processing-text" v-if="hasError">Возникла ошибка, попробуйте загрузить документ заново</div>
+        <div class="processing-text" v-else-if="!questions.length">Обработка документа<br>Пожалуйста, подождите...</div>
+        <component v-else :is="activeTabComponent" class="result"></component>
     </div>
 </div>
 </template>
@@ -29,7 +31,9 @@ export default {
             activeTab: 'form',
             imageSrc: '',
             imageExists: false,
+            questions: [],
             pageId: this.$route.params.id,
+            hasError: false,
         };
     },
     components: {
@@ -58,7 +62,45 @@ export default {
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
         }
-    }
+
+        const formJsonUrl = `http://localhost:3000/results/${pageId}/form.json`;
+        try {
+            const response = await axios.get(formJsonUrl);
+            const formData = response.data;
+
+            if (formData.pages.length > 0) {
+                this.questions = formData.pages;
+            } else {
+                this.processing = true;
+                await this.processForm(pageId);
+                this.processing = false;
+            }
+        } catch (error) {
+            console.error('Ошибка при загрузке form.json:', error);
+        }
+    },
+    methods: {
+        async processForm(pageId) {
+            try {
+                const uniqueId = pageId.match(/form-(\d+)/)[1];
+                const extractUrl = `http://localhost:3000/extractForm/${uniqueId}/1/`;
+                await axios.get(extractUrl);
+
+                const formJsonUrl = `http://localhost:3000/results/${pageId}/form.json`;
+                const response = await axios.get(formJsonUrl);
+                const formData = response.data;
+
+                if (formData.pages.length > 0) {
+                    this.questions = formData.pages;
+                } else {
+                    console.warn('Обработка формы завершена, но вопросы не были сгенерированы.');
+                }
+            } catch (error) {
+                console.error('Ошибка при обработке формы:', error);
+                this.hasError = true;
+            }
+        },
+    },
 }
 </script>
 
@@ -154,6 +196,18 @@ button.active {
     background-color: #50CE86;
     cursor: default;
     transition: background-color 0.3s;
+}
+
+.processing-text {
+    font-family: Comfortaa;
+    font-size: 30px;
+    font-weight: bold;
+    color: #303030;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
 }
 
 .result {
