@@ -14,7 +14,6 @@ export default {
     HeaderSidebar,
   },
   computed: {
-    // Проверяем, находимся ли мы на странице формы
     isFullScreenForm() {
       return this.$route.name === 'FullScreenForm';
     }
