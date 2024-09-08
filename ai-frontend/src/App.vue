@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-  <HeaderSidebar />
+  <HeaderSidebar v-if="!isFullScreenForm" />
   <router-view/>
 </div>
 </template>
@@ -12,6 +12,12 @@ export default {
   name: 'App',
   components: {
     HeaderSidebar,
+  },
+  computed: {
+    // Проверяем, находимся ли мы на странице формы
+    isFullScreenForm() {
+      return this.$route.name === 'FullScreenForm';
+    }
   }
 }
 </script>

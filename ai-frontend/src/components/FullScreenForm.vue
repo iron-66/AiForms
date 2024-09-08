@@ -1,14 +1,13 @@
 <template>
-<div class="form-container">
+<div class="fullscreen-form-container">
     <div class="header">
         <img src="../assets/images/Logo beta.png" alt="AiForms Logo" class="logo" />
-        <button @click="openInNewTab" class="gradient-btn">Открыть в отдельной вкладке</button>
     </div>
     <div class="form-content" v-if="questions.length && !isCompleted">
         <h2>Вопрос {{ currentQuestionIndex + 1 }}</h2>
         <h3>{{ currentQuestion.question_text }}</h3>
         <p v-if="currentQuestion.answer_type !== 'text'">{{ currentQuestion.hint_text }}</p>
-
+        
         <div class="input-field">
             <template v-if="currentQuestion.answer_type === 'text'">
                 <input type="text" v-model="formData[currentQuestionIndex]" :placeholder="currentQuestion.hint_text" />
@@ -100,24 +99,19 @@ export default {
                 console.error('Ошибка при сохранении ответов:', error);
             }
         },
-        openInNewTab() {
-            const fullScreenFormUrl = this.$router.resolve({
-                name: 'FullScreenForm',
-                params: { id: this.$route.params.id },
-            }).href;
-            window.open(fullScreenFormUrl, '_blank');
-        },
     },
 };
 </script>
 
 <style scoped>
-.form-container {
+.fullscreen-form-container {
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100vh;
     box-sizing: border-box;
+    padding: 20px;
 }
 
 .header {
@@ -128,6 +122,41 @@ export default {
 
 .logo {
     max-width: 150px;
+}
+
+.form-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+h2, h3, p {
+    margin: 10px 0;
+}
+
+.input-field {
+    margin: 20px 0;
+    width: 500px;
+}
+
+input, select {
+    width: 100%;
+    padding: 15px;
+    font-size: 17px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    box-sizing: border-box;
+    font-family: Comfortaa;
+}
+
+.form-navigation {
+    margin-top: 20px;
+    display: flex;
+    gap: 30px;
+    justify-content: center;
 }
 
 .gradient-btn {
@@ -181,41 +210,6 @@ export default {
     transition: background 0.5s ease;
 }
 
-.form-content {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-}
-
-h2, h3, p {
-    margin: 10px 0;
-}
-
-.input-field {
-    margin: 20px 0;
-    width: 100%;
-}
-
-input, select {
-    width: 100%;
-    padding: 15px;
-    font-size: 17px;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-    box-sizing: border-box;
-    font-family: Comfortaa;
-}
-
-.form-navigation {
-    margin-top: 20px;
-    display: flex;
-    gap: 30px;
-    justify-content: center;
-}
-
 .form-completion {
     display: flex;
     justify-content: center;
@@ -223,4 +217,30 @@ input, select {
     flex-grow: 1;
     text-align: center;
 }
+
+@media (max-width: 768px) {
+    .fullscreen-form-container {
+        padding: 10px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .input-field {
+        width: 100%;
+    }
+
+    input, select {
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    .gradient-btn {
+        padding: 8px 15px;
+        font-size: 15px;
+    }
+}
 </style>
+    

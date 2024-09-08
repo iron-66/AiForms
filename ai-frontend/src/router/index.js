@@ -4,6 +4,7 @@ import CreateForm from '../views/CreateForm.vue'
 import MyForms from '../views/MyForms.vue'
 import ResultPage from '../views/ResultPage.vue';
 import SettingsPage from '../views/SettingsPage.vue';
+import FullScreenForm from '../components/FullScreenForm.vue';
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     name: 'SettingsPage',
     component: SettingsPage
   },
+  {
+    path: '/fullscreen-form/:id',
+    name: 'FullScreenForm',
+    component: FullScreenForm
+  }
 ];
 
 const router = createRouter({
