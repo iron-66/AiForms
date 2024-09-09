@@ -95,7 +95,7 @@ export default {
             this.isCompleted = true;
             try {
                 await axios.post(`http://localhost:3000/saveAnswers/${this.$route.params.id}`, { answers: this.formData });
-                console.log('Результаты успешно сохранены');
+                console.log('Результаты успешно сохранены', this.formData);
             } catch (error) {
                 console.error('Ошибка при сохранении ответов:', error);
             }

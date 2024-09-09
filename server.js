@@ -220,9 +220,7 @@ async function sendToGigaChat(req, res) {
 // Функция для распознавания текста на изображении с помощью Tesseract
 async function recognizeText(imagePath) {
   return new Promise((resolve, reject) => {
-    Tesseract.recognize(imagePath, 'rus+eng', {
-      logger: m => console.log(m),
-    })
+    Tesseract.recognize(imagePath, 'rus+eng')
       .then(({ data: { text } }) => {
         resolve(text);
       })
@@ -350,26 +348,37 @@ app.post('/saveAnswers/:formId', async (req, res) => {
   const formId = req.params.formId;
   const answers = req.body.answers;
   const savePath = `./public/results/${formId}/answers`;
-  
-  // Создание папки answers, если она не существует
+
   if (!fs.existsSync(savePath)) {
     fs.mkdirSync(savePath);
   }
-  
-  // Создание файла с уникальным именем
-  const timestamp = Date.now();
-  const filePath = `${savePath}/answers-${timestamp}.csv`;
 
-  // Преобразование данных в CSV-формат
-  const csvHeaders = Object.keys(answers[0]).join(',') + '\n';
-  const csvRows = answers.map(row => Object.values(row).join(',')).join('\n');
-  const csvContent = csvHeaders + csvRows;
+  const filePath = `${savePath}/answers.csv`;
 
   try {
-    // Запись данных в файл
-    fs.writeFileSync(filePath, csvContent);
+    let csvData = [];
+
+    if (fs.existsSync(filePath)) {
+      csvData = fs.readFileSync(filePath, 'utf8')
+        .split('\n')
+        .map(row => row.split(','));
+    }
+
+    answers.forEach((answer, index) => {
+      if (csvData[index]) {
+        csvData[index].push(answer);
+      } else {
+        const newRow = csvData[0] ? new Array(csvData[0].length - 1).fill('') : [];
+        newRow.push(answer);
+        csvData.push(newRow);
+      }
+    });
+
+    const csvContent = csvData.map(row => row.join(',')).join('\n');
+    const bom = '\uFEFF';
+
+    fs.writeFileSync(filePath, bom + csvContent, { encoding: 'utf8' });
     console.log(`Answers saved at ${filePath}`);
-    res.json({ message: 'Answers saved successfully!', filePath });
   } catch (err) {
     console.error('Error saving answers:', err);
     res.status(500).json({ error: 'Error saving answers' });
@@ -386,7 +395,7 @@ app.get('/getPrompt', (req, res) => {
     const defaultPrompt = fs.readFileSync(defaultPromptPath, 'utf8');
     res.json({ currentPrompt, defaultPrompt });
   } catch (error) {
-    res.status(500).json({ error: 'Не удалось загрузить промпт' });
+    res.status(500).json({ error: 'Failed to load prompt' });
   }
 });
 
@@ -397,7 +406,7 @@ app.post('/savePrompt', (req, res) => {
     fs.writeFileSync(promptPath, prompt, 'utf8');
     res.sendStatus(200);
   } catch (error) {
-    res.status(500).json({ error: 'Не удалось сохранить промпт' });
+    res.status(500).json({ error: 'Failed to save prompt' });
   }
 });
 

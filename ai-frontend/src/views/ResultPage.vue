@@ -11,8 +11,8 @@
             <button :class="{ active: activeTab === 'questions' }" @click="activeTab = 'questions'">вопросы</button>
             <button :class="{ active: activeTab === 'json' }" @click="activeTab = 'json'">json</button>
         </div>
-        <div class="processing-text" v-if="hasError">Возникла ошибка, попробуйте загрузить документ заново</div>
-        <div class="processing-text" v-else-if="!questions.length">Обработка документа<br>Пожалуйста, подождите...</div>
+        <div class="processing-text" v-if="hasError">Возникла ошибка<br><br>Попробуйте перезагрузить страницу<br>или выбрать другой формат документа</div>
+        <div class="processing-text" v-else-if="!questions.length">Обработка документа,<br>пожалуйста, подождите...</div>
         <component v-else :is="activeTabComponent" class="result"></component>
     </div>
 </div>
