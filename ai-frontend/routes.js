@@ -2,6 +2,7 @@ const serverURL = 'http://84.201.150.75:3000'; // http://localhost:3000
 
 export const urls = {
   uploadFile: `${serverURL}/uploadFile`,
+  getImageUrl: (folder) => `${serverURL}/results/${folder}/page.1.jpeg`,
   getFolders: `${serverURL}/getFolders`,
   deleteForm: (formId) => `${serverURL}/delete/${formId}`,
   getImage: (pageId) => `${serverURL}/results/${pageId}/page.1.jpeg`,

@@ -6,7 +6,7 @@
     </div>
     <div class="archive-panel">
         <div v-for="folder in folders" :key="folder" class="archive-card" @click="goToFormResult(folder)">
-            <img :src="`http://localhost:3000/results/${folder}/page.1.jpeg`" alt="Предпросмотр документа" />
+            <img :src="getImageSrc(folder)" alt="Предпросмотр документа" />
             <button class="delete-button" @click.stop="deleteForm(folder)">Удалить</button>
         </div>
     </div>
@@ -48,7 +48,10 @@ export default {
             .catch(error => {
                 console.error('Ошибка при удалении формы:', error);
             });
-        }
+        },
+        getImageSrc(folder) {
+            return urls.getImageUrl(folder);
+        },
     }
 }
 </script>
