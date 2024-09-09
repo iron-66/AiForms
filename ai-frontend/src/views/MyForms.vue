@@ -15,6 +15,7 @@
   
 <script>
 import axios from 'axios';
+import { urls } from '../../routes.js';
 
 export default {
     name: 'CreateForm',
@@ -24,7 +25,7 @@ export default {
         };
     },
     created() {
-        axios.get('http://localhost:3000/getFolders')
+        axios.get(urls.getFolders)
         .then(response => {
             console.log(response.data);
             this.folders = response.data;
@@ -40,7 +41,7 @@ export default {
         deleteForm(folder) {
             const formId = folder.split('-')[1];
 
-            axios.get(`http://localhost:3000/delete/${formId}`)
+            axios.get(urls.deleteForm(formId))
             .then(() => {
                 this.folders = this.folders.filter(f => f !== folder);
             })

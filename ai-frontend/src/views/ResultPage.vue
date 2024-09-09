@@ -23,6 +23,7 @@ import FormTab from '../components/FormTab.vue';
 import QuestionsTab from '../components/QuestionsTab.vue';
 import JsonTab from '../components/JsonTab.vue';
 import axios from 'axios';
+import { urls } from '../../routes.js';
 
 export default {
     name: 'ResultPage',
@@ -52,7 +53,7 @@ export default {
     },
     async created() {
         const pageId = this.$route.params.id;
-        this.imageSrc = `http://localhost:3000/results/${pageId}/page.1.jpeg`;
+        this.imageSrc = urls.getImage(pageId);
 
         while (!this.imageExists) {
             try {
@@ -63,7 +64,7 @@ export default {
             }
         }
 
-        const formJsonUrl = `http://localhost:3000/results/${pageId}/form.json`;
+        const formJsonUrl = urls.getFormJson(pageId);
         try {
             const response = await axios.get(formJsonUrl);
             const formData = response.data;
@@ -83,10 +84,10 @@ export default {
         async processForm(pageId) {
             try {
                 const uniqueId = pageId.match(/form-(\d+)/)[1];
-                const extractUrl = `http://localhost:3000/extractForm/${uniqueId}/1/`;
+                const extractUrl = urls.extractForm(uniqueId);
                 await axios.get(extractUrl);
 
-                const formJsonUrl = `http://localhost:3000/results/${pageId}/form.json`;
+                const formJsonUrl = urls.getFormJson(pageId);
                 const response = await axios.get(formJsonUrl);
                 const formData = response.data;
 

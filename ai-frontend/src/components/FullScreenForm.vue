@@ -50,6 +50,7 @@
 
 <script>
 import axios from 'axios';
+import { urls } from '../../routes.js';
 
 export default {
     data() {
@@ -67,7 +68,7 @@ export default {
     },
     async created() {
         const pageId = this.$route.params.id;
-        const formJsonUrl = `http://localhost:3000/results/${pageId}/form.json`;
+        const formJsonUrl = urls.getFormJson(pageId);
 
         try {
             const response = await axios.get(formJsonUrl);
@@ -93,7 +94,7 @@ export default {
         async completeForm() {
             this.isCompleted = true;
             try {
-                await axios.post(`http://localhost:3000/saveAnswers/${this.$route.params.id}`, { answers: this.formData });
+                await axios.post(urls.saveAnswers(this.$route.params.id), { answers: this.formData });
                 console.log('Результаты успешно сохранены');
             } catch (error) {
                 console.error('Ошибка при сохранении ответов:', error);

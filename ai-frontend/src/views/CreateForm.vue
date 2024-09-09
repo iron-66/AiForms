@@ -16,6 +16,7 @@
   
 <script>
 import axios from 'axios';
+import { urls } from '../../routes.js';
 
 export default {
     name: 'CreateForm',
@@ -45,7 +46,7 @@ export default {
             formData.append('fileUpload', this.selectedFile);
 
             try {
-                const response = await axios.post('http://localhost:3000/uploadFile', formData, {
+                const response = await axios.post(urls.uploadFile, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },

@@ -521,5 +521,5 @@ app.get('/json/:formId/:pageNum', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server running at http://84.201.150.75:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });

@@ -17,6 +17,7 @@
     
 <script>
 import axios from 'axios';
+import { urls } from '../../routes.js';
 
 export default {
     name: 'SettingsPage',
@@ -32,7 +33,7 @@ export default {
     methods: {
         async loadPrompt() {
             try {
-                const response = await axios.get('http://localhost:3000/getPrompt');
+                const response = await axios.get(urls.getPrompt);
                 this.currentPrompt = response.data.currentPrompt;
                 this.defaultPrompt = response.data.defaultPrompt;
             } catch (error) {
@@ -41,7 +42,7 @@ export default {
         },
         async savePrompt() {
             try {
-                await axios.post('http://localhost:3000/savePrompt', { prompt: this.currentPrompt });
+                await axios.post(urls.savePrompt, { prompt: this.currentPrompt });
                 alert('Промпт сохранён');
             } catch (error) {
                 console.error('Ошибка сохранения промпта:', error);
