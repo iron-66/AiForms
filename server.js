@@ -14,6 +14,7 @@ import axios from 'axios';
 import https from 'https';
 import { v4 as uuidv4 } from 'uuid';
 import cors from 'cors';
+import gm from 'gm';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -75,18 +76,42 @@ const getBearerToken = async () => {
 
 // Функция для загрузки и подготовки файла к обработке
 app.post('/uploadFile', upload.single('fileUpload'), async (req, res) => {
+  const filetype = req.file.mimetype; 
+  const tempFilePath = './public/results/' + req.file.filename;
   const now = `${Date.now()}`;
   var savePath = './public/results/form-' + now;
   fs.mkdirSync(savePath);
 
-  const filetype = req.file.mimetype;
-  const tempFilePath = './public/results/' + req.file.filename;
-
   if (filetype === 'image/jpeg') {
+    console.log('Saving JPEG file...');
     fs.renameSync(tempFilePath, savePath + '/page.1.jpeg');
-    console.log('Saving image...');
+  } else if (filetype === 'image/png') {
+    const outputPath = savePath + '/page.1.jpeg';
+    console.log('Converting PNG to JPEG...');
+
+    const convertPngToJpeg = (inputPath, outputPath) => {
+      return new Promise((resolve, reject) => {
+        gm(inputPath)
+          .setFormat('jpeg')
+          .write(outputPath, (err) => {
+            if (err) {
+              reject(err);
+            } else {
+              fs.unlinkSync(inputPath);
+              resolve();
+            }
+          });
+      });
+    };
+
+    try {
+      await convertPngToJpeg(tempFilePath, outputPath);
+    } catch (err) {
+      console.error('Error converting PNG to JPEG:', err);
+    }
   } else if (filetype === 'application/pdf') {
     fs.renameSync(tempFilePath, savePath + '/form.pdf');
+
     const options = {
       density: 300,
       saveFilename: 'page',
@@ -95,12 +120,18 @@ app.post('/uploadFile', upload.single('fileUpload'), async (req, res) => {
       width: 600,
       preserveAspectRatio: true,
     };
+
     const convert = fromPath(savePath + '/form.pdf', options);
-    console.log('Saving images of PDF pages...');
-    await convert.bulk(-1);
+    console.log('Converting PDF to JPEG...');
+
+    try {
+      await convert.bulk(-1);
+    } catch (err) {
+      console.error('Converting error:', err);
+    }
   }
 
-  console.log('Saved');
+  console.log('Done');
 
   // Создание JSON структуры формы
   var formJson = {
@@ -131,10 +162,11 @@ app.get('/getFolders', (req, res) => {
   
   fs.readdir(resultsPath, (err, files) => {
     if (err) {
-      return res.status(500).json({ error: 'Не удалось получить список папок' });
+      return res.status(500).json({ error: 'Failed to get folders list' });
     }
 
     const folders = files.filter(file => fs.statSync(path.join(resultsPath, file)).isDirectory());
+    
     console.log(folders);
     res.json(folders);
   });
@@ -191,7 +223,7 @@ async function sendToGigaChat(req, res) {
     }
 
     var endTime = performance.now();
-
+    console.log(result.choices[0].message.content);
     console.log(`Process took ${(endTime - startTime) / 1000} seconds`);
     let ans = JSON.parse(result.choices[0].message.content);
     console.log(ans);
@@ -219,6 +251,7 @@ async function sendToGigaChat(req, res) {
 
 // Функция для распознавания текста на изображении с помощью Tesseract
 async function recognizeText(imagePath) {
+  console.log('Start text recognizing');
   return new Promise((resolve, reject) => {
     Tesseract.recognize(imagePath, 'rus+eng')
       .then(({ data: { text } }) => {
