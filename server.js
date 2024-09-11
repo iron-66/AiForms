@@ -15,6 +15,8 @@ import https from 'https';
 import { v4 as uuidv4 } from 'uuid';
 import cors from 'cors';
 import gm from 'gm';
+import mammoth from 'mammoth';
+import libre from 'libreoffice-convert';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -127,7 +129,31 @@ app.post('/uploadFile', upload.single('fileUpload'), async (req, res) => {
     try {
       await convert.bulk(-1);
     } catch (err) {
-      console.error('Converting error:', err);
+      console.error('Error converting PDF to JPEG:', err);
+    }
+  } else if (filetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' || filetype === 'application/msword') {
+    console.log('Processing DOC/DOCX file...');
+    const pdfPath = savePath + '/form.pdf';
+    
+    try {
+      const result = await mammoth.extractRawText({ path: tempFilePath });
+      fs.writeFileSync(savePath + '/form.txt', result.value);
+
+      await convertDocToPdf(tempFilePath, pdfPath);
+
+      const options = {
+        density: 300,
+        saveFilename: 'page',
+        savePath: savePath,
+        format: 'jpeg',
+        width: 600,
+        preserveAspectRatio: true,
+      };
+
+      const convert = fromPath(pdfPath, options);
+      await convert.bulk(-1);
+    } catch (err) {
+      console.error('Error processing DOC/DOCX:', err);
     }
   }
 
@@ -155,6 +181,21 @@ app.post('/uploadFile', upload.single('fileUpload'), async (req, res) => {
 
   res.redirect('/results/form-' + now + '/1');
 });
+
+// Функция для конвертации файлов DOC/DOCX в PDF
+const convertDocToPdf = (inputPath, outputPath) => {
+  return new Promise((resolve, reject) => {
+    const fileBuffer = fs.readFileSync(inputPath);
+    libre.convert(fileBuffer, '.pdf', undefined, (err, pdfBuffer) => {
+      if (err) {
+        reject(err);
+      } else {
+        fs.writeFileSync(outputPath, pdfBuffer);
+        resolve();
+      }
+    });
+  });
+};
 
 // Функция для получения всех папок с результатами обработки
 app.get('/getFolders', (req, res) => {
