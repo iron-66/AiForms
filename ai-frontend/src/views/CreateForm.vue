@@ -68,39 +68,40 @@ export default {
 <style scoped>
 .create-form {
     display: flex;
-    margin-left: 310px;
+    margin-left: 16.15vw;
 }
 
 .central-panel {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 345px;
-    height: 533px;
-    margin-top: 170px;
-    margin-left: 130px;
+    width: 17.97vw;
+    height: 58.5vh;
+    margin-top: 18.66vh;
+    margin-left: 6.77vw;
 }
 
 .create-form-header {
-    font-size: 40px;
+    font-size: min(2.08vw, 40px);
     font-weight: bold;
     color: #303030;
 }
 
 .create-form-logo {
-    width: 286px;
-    height: 267px;
+    max-width: 286px;
+    width: 14.9vw;
 }
 
 .process-button {
-    margin-top: 80px;
+    margin-top: 8.78vh;
     background-color: #50CE86;
-    width: 270px;
+    max-width: 270px;
+    width: 14.06vw;
     height: 70px;
     border: none;
     border-radius: 20px;
     font-family: Comfortaa;
-    font-size: 30px;
+    font-size: min(1.56vw, 30px);
     color: #fff;
     box-shadow: inset 12px 12px 20px rgba(255, 255, 255, 0.25);
     cursor: pointer;
@@ -117,10 +118,10 @@ export default {
 }
 
 .upload-window {
-    margin-top: 115px;
-    margin-left: 130px;
-    width: 810px;
-    height: 685px;
+    margin-top: 12.62vh;
+    margin-left: 6.78vw;
+    width: 42.18vw;
+    height: 75.2vh;
     position: relative;
     background: #F5F6FF;
     border-radius: 46px;
@@ -140,23 +141,23 @@ export default {
 }
 
 .upload-description {
-    width: 650px;
-    font-size: 30px;
+    width: 33.85vw;
+    font-size: min(1.56vw, 30px);
     font-weight: bold;
     color: #303030;
     text-align: center;
     margin: auto;
-    margin-top: 270px;
+    margin-top: 29.64vh;
 }
 
 .supported-formats {
-    width: 355px;
-    font-size: 20px;
+    width: 18.49vw;
+    font-size: min(1.05vw, 20px);
     color: #777;
     font-weight: bold;
     text-align: center;
     margin: auto;
-    margin-top: 20px;
+    margin-top: 2.2vh;
 }
 
 .file-input {
