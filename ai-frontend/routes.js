@@ -1,4 +1,4 @@
-const serverURL = 'http://84.201.150.75:3000'; // http://localhost:3000
+const serverURL = 'http://84.201.148.240/:3000'; // http://localhost:3000
 
 export const urls = {
   uploadFile: `${serverURL}/uploadFile`,
