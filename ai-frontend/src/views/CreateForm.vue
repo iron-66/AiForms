@@ -20,6 +20,9 @@ import { urls } from '../../routes.js';
 
 export default {
     name: 'CreateForm',
+    mounted() {
+        document.title = 'AiForms | Новая форма';
+    },
     data() {
         return {
             selectedFile: null,

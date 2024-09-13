@@ -27,6 +27,9 @@ import { urls } from '../../routes.js';
 
 export default {
     name: 'ResultPage',
+    mounted() {
+        document.title = 'AiForms | Просмотр результата';
+    },
     data() {
         return {
             activeTab: 'form',

@@ -18,7 +18,10 @@ import axios from 'axios';
 import { urls } from '../../routes.js';
 
 export default {
-    name: 'CreateForm',
+    name: 'MyForms',
+    mounted() {
+        document.title = 'AiForms | Мои формы';
+    },
     data() {
         return {
             folders: []

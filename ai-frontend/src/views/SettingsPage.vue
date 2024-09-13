@@ -28,6 +28,7 @@ export default {
         };
     },
     mounted() {
+        document.title = 'AiForms | Настройки';
         this.loadPrompt();
     },
     methods: {

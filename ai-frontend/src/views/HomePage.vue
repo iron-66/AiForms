@@ -98,6 +98,7 @@ export default {
         },
     },
     mounted() {
+        document.title = 'AiForms | AI генератор форм';
         this.addCardHoverEffect();
     }
 }
