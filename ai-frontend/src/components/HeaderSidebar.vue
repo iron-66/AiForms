@@ -57,15 +57,15 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    width: 310px;
+    width: 16.15vw;
     height: 100%;
     background-color: #F5F6FF;
 }
 
 .logo {
-    width: 216px;
-    height: 71px;
-    margin: 55px auto 60px 46px;
+    max-width: 216px;
+    width: 11.25vw;
+    margin: 6.04vh auto 6.58vh 2.4vw;
     cursor: pointer;
 }
 
@@ -79,13 +79,14 @@ export default {
 .navigation li {
     display: flex;
     align-items: center;
-    margin-bottom: 35px;
-    margin-left: 10px;
+    margin-bottom: 4.5vh;
+    margin-left: 0.52vw;
     color: #5F5F5F;
-    padding-left: 10px;
+    font-size: 0.88vw;
+    padding-left: 0.52vw;
     cursor: pointer;
-    height: 54px;
-    width: 270px;
+    height: 5.93vh;
+    width: 14.06vw;
     position: relative;
     border-radius: 14px;
     background: #F5F6FF;
@@ -117,17 +118,16 @@ export default {
 }
 
 .icon {
-    width: 30px;
-    height: 30px;
-    margin-right: 20px;
+    width: 1.56vw;
+    margin-right: 1.04vw;
 }
 
 .sidebar-divider {
     position: absolute;
-    top: 55px;
+    top: 6.04vh;
     right: 0;
     width: 2px;
-    height: 810px;
+    height: 88.91vh;
     background-color: #5f5f5f88;
     border-radius: 1px 1px 1px 1px;
 }
