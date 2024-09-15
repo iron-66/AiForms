@@ -128,18 +128,18 @@ export default {
 }
 
 .logo {
-    max-width: 150px;
+    max-width: 7.81vw;
 }
 
 .gradient-btn {
-    padding: 10px 20px;
+    padding: 1.09vh 1.04vw;
     position: relative;
     border-radius: 17px;
     border: none;
     background: #F5F6FF;
     color: #303030;
     font-weight: bold;
-    font-size: 17px;
+    font-size: min(0.88vw, 17px);
     font-family: Comfortaa;
     cursor: pointer;
     transition: background 0.5s ease;
@@ -188,22 +188,30 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 10px;
+    padding: 1.09vh 0.52vw;
+}
+
+h2 {
+    font-size: min(1.3vw, 25px);
+}
+
+h3 {
+    font-size: min(1.04vw, 20px);
 }
 
 h2, h3, p {
-    margin: 10px 0;
+    margin: 1.09vh 0;
 }
 
 .input-field {
-    margin: 20px 0;
+    margin: 2.2vh 0;
     width: 100%;
 }
 
 input, select {
     width: 100%;
-    padding: 15px;
-    font-size: 17px;
+    padding: 1.64vh 0.78vw;
+    font-size: min(0.88vw, 17px);
     border: 1px solid #ccc;
     border-radius: 15px;
     box-sizing: border-box;
@@ -211,9 +219,9 @@ input, select {
 }
 
 .form-navigation {
-    margin-top: 20px;
+    margin-top: 2.2vh;
     display: flex;
-    gap: 30px;
+    gap: 1.56vw;
     justify-content: center;
 }
 
