@@ -37,26 +37,27 @@ export default {
 
 <style scoped>
 .question-block {
-    margin-bottom: 20px;
+    margin-bottom: 2.2vh;
     font-weight: bold;
 }
 
 .question {
-    font-size: 18px;
+    font-size: min(0.93vw, 18px);
     color: #303030;
 }
 
 h3 {
+    font-size: min(1.04vw, 20px);
     color: #303030;
 }
 
 .description {
-    font-size: 18px;
+    font-size: min(0.93vw, 18px);
     color: #777;
 }
 
 .separator {
     border-bottom: 1px solid #ccc;
-    margin: 20px 0;
+    margin: 2.2vh 0;
 }
 </style>
