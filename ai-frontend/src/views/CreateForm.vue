@@ -102,7 +102,7 @@ export default {
     width: 14.06vw;
     height: 70px;
     border: none;
-    border-radius: 20px;
+    border-radius: 1.04vw;
     font-family: Comfortaa;
     font-size: min(1.56vw, 30px);
     color: #fff;
@@ -127,7 +127,7 @@ export default {
     height: 75.2vh;
     position: relative;
     background: #F5F6FF;
-    border-radius: 46px;
+    border-radius: 2.39vw;
     cursor: pointer;
 }
 
@@ -139,7 +139,7 @@ export default {
     right: -4px;
     bottom: -4px;
     background: linear-gradient(to right, #50CE86, #6DB7F1);
-    border-radius: 50px;
+    border-radius: 2.6vw;
     z-index: -1;
 }
 
