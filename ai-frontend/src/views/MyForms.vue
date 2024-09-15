@@ -62,45 +62,44 @@ export default {
 <style scoped>
 .my-forms {
     display: flex;
-    margin-left: 310px;
+    margin-left: 16.15vw;
 }
 
 .central-panel {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 345px;
-    height: 533px;
-    margin-top: 170px;
-    margin-left: 130px;
+    width: 17.97vw;
+    height: 58.5vh;
+    margin-top: 18.66vh;
+    margin-left: 6.77vw;
     position: fixed;
 }
 
 .my-forms-header {
-    font-size: 40px;
+    font-size: min(2.08vw, 40px);
     font-weight: bold;
     color: #303030;
 }
 
 .my-forms-logo {
-    margin-top: 80px;
-    width: 286px;
-    height: 267px;
+    margin-top: 8.78vh;
+    width: 14.9vw;
 }
 
 .archive-panel {
-    margin-top: 115px;
-    margin-left: 610px;
-    width: 790px;
-    height: 685px;
+    margin-top: 12.62vh;
+    margin-left: 31.77vw;
+    width: 41.15vw;
+    height: 7.52vh;
     display: flex;
     flex-wrap: wrap;
-    gap: 50px;
+    gap: 2.6vw;
 }
 
 .archive-card {
-    width: 230px;
-    height: 300px;
+    width: 11.98vw;
+    height: 32.93vh;
     position: relative;
     cursor: pointer;
 }
@@ -113,7 +112,7 @@ export default {
     right: -4px;
     bottom: -4px;
     background: linear-gradient(to right, #50CE86, #6DB7F1);
-    border-radius: 50px;
+    border-radius: 2.604vw;
     z-index: -1;
     transition: all 0.1s ease;
 }
@@ -129,21 +128,21 @@ export default {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 46px;
+    border-radius: 2.395vw;
 }
 
 .delete-button {
-    width: 115px;
+    width: 5.99vw;
     position: absolute;
-    bottom: 10px;
+    bottom: 1.09vh;
     left: 25%;
     font-family: Comfortaa;
-    font-size: 16px;  
+    font-size: min(0.83vw, 16px);
     background-color: #E85353;
     box-shadow: inset 12px 12px 20px rgba(255, 255, 255, 0.25);
     color: white;
     border: none;
-    padding: 10px;
+    padding: 1.09vh 0.52vw;
     border-radius: 15px;
     cursor: pointer;
     opacity: 0;
@@ -157,29 +156,5 @@ export default {
 
 .archive-card:hover .delete-button {
     opacity: 1;
-}
-
-.upload-description {
-    width: 650px;
-    font-size: 30px;
-    font-weight: bold;
-    color: #303030;
-    text-align: center;
-    margin: auto;
-    margin-top: 270px;
-}
-
-.supported-formats {
-    width: 355px;
-    font-size: 20px;
-    color: #777;
-    font-weight: bold;
-    text-align: center;
-    margin: auto;
-    margin-top: 20px;
-}
-
-.file-input {
-    display: none;
 }
 </style>
