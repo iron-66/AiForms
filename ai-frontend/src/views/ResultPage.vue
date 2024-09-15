@@ -223,7 +223,7 @@ button.active {
     border-radius: 15px;
     overflow-y: auto;
     overflow-x: auto;
-    padding: 25px;
+    padding: 1.3vw;
     box-sizing: border-box;
 }
 
