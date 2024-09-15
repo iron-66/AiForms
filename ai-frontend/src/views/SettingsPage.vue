@@ -59,49 +59,49 @@ export default {
 <style scoped>
 .settings-page {
     display: flex;
-    margin-left: 310px;
+    margin-left: 16.15vw;
 }
 
 .central-panel {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 345px;
-    height: 533px;
-    margin-top: 170px;
-    margin-left: 130px;
+    width: 17.97vw;
+    height: 58.5vh;
+    margin-top: 18.66vh;
+    margin-left: 6.77vw;
 }
 
 .settings-page-header {
-    font-size: 40px;
+    font-size: min(2.08vw, 40px);
     font-weight: bold;
     color: #303030;
 }
 
 .settings-page-logo {
-    width: 286px;
-    height: 267px;
+    max-width: 286px;
+    width: 14.9vw;
 }
 
 .settings-description {
     text-align: center;
-    margin-top: 80px;
-    width: 355px;
-    height: 88px;
+    margin-top: 8.78vh;
+    width: 18.49vw;
+    height: 9.66vh;
     font-family: Comfortaa;
-    font-size: 20px;
+    font-size: min(1.04vw, 20px);
     font-weight: bold;
     color: #777777;
 }
 
 .settings-window {
-    margin-top: 115px;
-    margin-left: 130px;
-    width: 810px;
-    height: 685px;
+    margin-top: 12.62vh;
+    margin-left: 6.78vw;
+    width: 42.18vw;
+    height: 75.2vh;
     position: relative;
     background: #F5F6FF;
-    border-radius: 46px;
+    border-radius: 2.39vw;
     cursor: pointer;
 }
 
@@ -113,22 +113,22 @@ export default {
     right: -4px;
     bottom: -4px;
     background: linear-gradient(to right, #50CE86, #6DB7F1);
-    border-radius: 50px;
+    border-radius: 2.6vw;
     z-index: -1;
 }
 
 .prompt-input {
-    width: 750px;
-    height: 520px;
-    margin-top: 30px;
-    margin-left: 30px;
+    width: 39.06vw;
+    height: 57.08vh;
+    margin-top: 3.29vh;
+    margin-left: 1.56vw;
     background: #F5F6FF;
     border: 1px solid #5F5F5F;
     border-radius: 15px;
-    font-size: 17px;
+    font-size: min(0.88vw, 17px);
     overflow-y: auto;
     overflow-x: auto;
-    padding: 25px;
+    padding: 2.74vh 1.30vw;
     box-sizing: border-box;
     resize: none;
     overflow-y: auto;
@@ -160,20 +160,20 @@ export default {
 
 .buttons {
     display: flex;
-    margin-top: 30px;
-    margin-left: 30px;
-    gap: 30px;
+    margin-top: 3.29vh;
+    margin-left: 1.56vw;
+    gap: 1.56vw;
 }
 
 .save-btn {
-    width: 260px;
-    height: 75px;
-    border-radius: 20px;
+    width: 13.54vw;
+    height: 8.23vh;
+    border-radius: 1.04vw;
     border: none;
     outline: none;
     background-color: #50CE86;
     font-family: Comfortaa;
-    font-size: 30px;
+    font-size: min(1.56vw, 30px);
     color: #fff;
     box-shadow: inset 12px 12px 20px rgba(255, 255, 255, 0.25);
     cursor: pointer;
@@ -181,14 +181,14 @@ export default {
 }
 
 .default-btn {
-    width: 460px;
-    height: 75px;
-    border-radius: 20px;
+    width: 23.96vw;
+    height: 8.23vh;
+    border-radius: 1.04vw;
     border: none;
     outline: none;
     background-color: #B3B3B3;
     font-family: Comfortaa;
-    font-size: 30px;
+    font-size: min(1.56vw, 30px);
     color: #fff;
     box-shadow: inset 12px 12px 20px rgba(255, 255, 255, 0.25);
     cursor: pointer;
