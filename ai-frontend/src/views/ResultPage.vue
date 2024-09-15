@@ -111,38 +111,38 @@ export default {
 <style scoped>
 .result-page {
     display: flex;
-    margin-left: 310px;
+    margin-left: 16.15vw;
 }
 
 .central-panel {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 345px;
-    height: 533px;
-    margin-top: 170px;
-    margin-left: 130px;
+    width: 17.97vw;
+    height: 58.5vh;
+    margin-top: 18.66vh;
+    margin-left: 6.77vw;
 }
 
 .result-page-header {
-    font-size: 40px;
+    font-size: min(2.08vw, 40px);
     font-weight: bold;
     color: #303030;
 }
 
 .document-preview {
-    max-width: 366px;
-    max-height: 524px;
+    max-width: 19.06vw;
+    max-height: 57.52vh;
     border: 1px solid #5F5F5F;
 }
 
 .result-window {
-    margin-top: 115px;
-    margin-left: 130px;
-    width: 810px;
-    height: 685px;
+    margin-top: 12.62vh;
+    margin-left: 6.78vw;
+    width: 42.18vw;
+    height: 75.2vh;
     position: relative;
-    border-radius: 46px;
+    border-radius: 2.39vw;
     z-index: 0;
 }
 
@@ -154,7 +154,7 @@ export default {
     right: -4px;
     bottom: -4px;
     background: linear-gradient(to right, #50CE86, #6DB7F1);
-    border-radius: 50px;
+    border-radius: 2.6vw;
     z-index: -3;
 }
 
@@ -166,26 +166,26 @@ export default {
     right: 0;
     bottom: 0;
     background: #F5F6FF;
-    border-radius: 46px;
+    border-radius: 2.39vw;
     z-index: -2;
 }
 
 .tabs {
     display: flex;
-    gap: 30px;
-    margin-top: 30px;
-    margin-left: 30px;
+    margin-top: 3.29vh;
+    margin-left: 1.56vw;
+    gap: 1.56vw;
 }
 
 button {
-    width: 230px;
-    height: 75px;
-    border-radius: 20px;
+    width: 11.98vw;
+    height: 8.23vh;
+    border-radius: 1.04vw;
     border: none;
     outline: none;
     background-color: #B3B3B3;
     font-family: Comfortaa;
-    font-size: 30px;
+    font-size: min(1.56vw, 30px);
     color: #fff;
     box-shadow: inset 12px 12px 20px rgba(255, 255, 255, 0.25);
     cursor: pointer;
@@ -204,7 +204,7 @@ button.active {
 
 .processing-text {
     font-family: Comfortaa;
-    font-size: 30px;
+    font-size: min(1.56vw, 30px);
     font-weight: bold;
     color: #303030;
     display: flex;
@@ -215,10 +215,10 @@ button.active {
 }
 
 .result {
-    width: 750px;
-    height: 520px;
-    margin-top: 30px;
-    margin-left: 30px;
+    width: 39.06vw;
+    height: 57.08vh;
+    margin-top: 3.29vh;
+    margin-left: 1.56vw;
     border: 1px solid #5F5F5F;
     border-radius: 15px;
     overflow-y: auto;
