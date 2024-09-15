@@ -1,6 +1,6 @@
 <template>
 <div>
-    <pre>{{ rawJson }}</pre>
+    <pre class="json-text">{{ rawJson }}</pre>
 </div>
 </template>
 
@@ -29,6 +29,8 @@ export default {
 </script>
 
 <style scoped>
-
+.json-text {
+    font-size: min(0.78vw, 15px);
+}
 </style>
   
