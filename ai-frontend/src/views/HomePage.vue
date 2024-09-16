@@ -106,9 +106,9 @@ export default {
 
 <style scoped>
 .home-page {
-    margin-left: 310px;
-    padding-left: 140px;
-    padding-top: 110px;
+    margin-left: 16.15vw;
+    padding-left: 7.29vw;
+    padding-top: 12.07vh;
 }
 
 .main-content {
@@ -118,7 +118,7 @@ export default {
 .card-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 1.56vw;
     max-width: 620px;
     justify-content: center;
     perspective: 1000px;
@@ -126,9 +126,9 @@ export default {
 
 .card {
     background-color: #fff;
-    border-radius: 50px;
-    width: 295px;
-    height: 295px;
+    border-radius: 2.6vw;
+    width: 15.36vw;
+    height: 15.36vw;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -142,7 +142,7 @@ export default {
 }
 
 .card:hover {
-    transform: rotateY(10deg) rotateX(10deg); /* Поворот карточки */
+    transform: rotateY(10deg) rotateX(10deg);
 }
 
 .green {
@@ -162,17 +162,17 @@ export default {
 }
 
 .card-title {
-    margin-top: 25px;
+    margin-top: 2.74vh;
     font-weight: bold;
-    font-size: 30px;
+    font-size: min(1.56vw, 30px);
     color: #303030;
-    width: 200px;
+    width: 10.41vw;
 }
 
 .card-icon {
     width: 240px;
     height: auto;
-    margin-top: 55px;
+    margin-top: 6.04vh;
     position: absolute;
 }
 
