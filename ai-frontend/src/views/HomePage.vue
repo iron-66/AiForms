@@ -119,9 +119,9 @@ export default {
     display: flex;
     flex-wrap: wrap;
     gap: 1.56vw;
-    max-width: 620px;
+    width: 32.29vw; /*дёргается, было 620px*/
     justify-content: center;
-    perspective: 1000px;
+    perspective: 52.08vw;
 }
 
 .card {
@@ -162,54 +162,52 @@ export default {
 }
 
 .card-title {
-    margin-top: 2.74vh;
+    margin-top: 1.3vw;
     font-weight: bold;
     font-size: min(1.56vw, 30px);
     color: #303030;
-    width: 10.41vw;
+    width: 10.45vw;
 }
 
 .card-icon {
-    width: 240px;
-    height: auto;
-    margin-top: 6.04vh;
+    width: 12.5vw; /*дёргается, было 240px*/
+    margin-top: 2.86vw;
     position: absolute;
 }
 
 .desc-card {
-    width: 620px;
-    margin-left: 50px;
+    width: 32.29vw;
+    margin-left: 2.6vw;
     display: flex;
     flex-direction: column;
     background-color: #C4E2D0;
-    border-radius: 50px;
+    border-radius: 2.6vw;
     position: relative;
 }
 
 .description {
-    margin-top: 35px;
-    margin-left: 35px;
+    margin-top: 1.82vw;
+    margin-left: 1.82vw;
     font-weight: bold;
-    font-size: 40px;
+    font-size: min(2.08vw, 40px);
     color: #303030;
 }
 
 .person {
-    width: 410px;
-    height: auto;
-    margin-top: 210px;
-    margin-left: 230px;
+    width: 21.35vw;
+    margin-top: 10.9375vw;
+    margin-left: 11.98vw;
     position: absolute;
 }
 
 .features {
-    margin-top: 100px;
+    margin-top: 5.2vw;
+    width: 66.7vw;
     position: relative;
     background: #F5F6FF;
-    border-radius: 46px;
+    border-radius: 2.396vw;
     padding: 1px;
-    padding-bottom: 50px;
-    max-width: 1300px;
+    padding-bottom: 2.6vw;
 }
 
 .features::before {
@@ -220,7 +218,7 @@ export default {
     right: -4px;
     bottom: -4px;
     background: linear-gradient(to right, #50CE86, #6DB7F1);
-    border-radius: 50px;
+    border-radius: 2.604vw;
     z-index: -1;
 }
 
@@ -229,83 +227,94 @@ export default {
     align-items: center;
     max-width: 1310px;
     max-height: 280px;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 2.6vw;
+    margin-bottom: 2.6vw;
 }
 
 .features h2 {
     text-align: center;
     color: #303030;
     font-weight: bold;
-    font-size: 40px;
+    font-size: min(2.08vw, 40px);
     -webkit-text-stroke: 2px #303030;
 }
 
 .features p {
-    font-size: 30px;
+    font-size: min(1.56vw, 30px);
     color: #303030;
 }
 
 .str-1 {
-    gap: 108px;
-    margin-left: 120px;
+    gap: 5.625vw;
+    margin-left: 6.25vw;
 }
 
 .ai-image {
-    width: 265px;
-    height: auto;
+    width: 13.8vw;
 }
 
 .str-2 {
-    gap: 108px;
-    margin-left: 152px;
+    gap: 5.625vw;
+    margin-left: 7.92vw;
     text-align: right;
-}
-
-.str-3 {
-    gap: 75px;
-    margin-left: 90px;
-}
-
-.str-4 {
-    gap: 70px;
-    margin-left: 177px;
-    text-align: right;
-}
-
-.str-5 {
-    gap: 50px;
-    margin-left: 90px;
 }
 
 .upload-image {
-    width: 334px;
+    width: 17.39vw;
+}
+
+.str-3 {
+    gap: 3.9vw;
+    margin-left: 4.69vw;
+}
+
+.find-image {
+    width: 17.39vw;
+}
+
+.str-4 {
+    gap: 3.8vw;
+    margin-left: 9.22vw;
+    text-align: right;
+}
+
+.dashboard-image {
+   width: 15vw;
+}
+
+.str-5 {
+    gap: 2.6vw;
+    margin-left: 4.69vw;
+}
+
+.monitor-image {
+    width: 17.39vw;
 }
 
 .contacts {
-    margin-top: 100px;
+    margin-top: 5.2vw;
+    width: 66.7vw;
     text-align: center;
-    max-width: 1300px;
 }
 
 .contacts h2 {
     color: #303030;
     font-weight: bold;
-    font-size: 40px;
+    font-size: min(2.08vw, 40px);
     -webkit-text-stroke: 2px #303030;
 }
 
 .contacts p {
     color: #303030;
     font-weight: bold;
-    font-size: 30px;
+    font-size: min(1.56vw, 30px);
 }
 
 .links {
-    margin-top: 50px;
+    margin-top: 2.6vw;
     display: flex;
     justify-content: center;
-    gap: 150px;
+    gap: 7.8vw;
 }
 
 .link-element {
@@ -313,14 +322,14 @@ export default {
 }
 
 .social-icon {
-    width: 50px;
-    height: 50px;
+    width: 2.6vw;
+    height: 2.6vw;
 }
 
 .links p {
     font-weight: bold;
-    font-size: 30px;
-    margin: auto auto auto 20px;
+    font-size: min(1.56vw, 30px);
+    margin: auto auto auto 1.04vw;
 }
 
 .social-link {
