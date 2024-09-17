@@ -137,6 +137,7 @@ export default {
     box-shadow: inset 12px 12px 20px rgba(255, 255, 255, 0.25);
     position: relative;
     cursor: pointer;
+    will-change: transform;
     transition: transform 0.3s ease-out;
     transform-style: preserve-3d;
 }
