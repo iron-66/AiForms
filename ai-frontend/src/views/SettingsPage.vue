@@ -17,7 +17,7 @@
     
 <script>
 import axios from 'axios';
-import { urls } from '../../routes.js';
+import { urls } from '../../routes.mjs';
 
 export default {
     name: 'SettingsPage',

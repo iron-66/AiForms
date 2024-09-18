@@ -17,6 +17,7 @@ import cors from 'cors';
 import gm from 'gm';
 import mammoth from 'mammoth';
 import libre from 'libreoffice-convert';
+import { urls } from './ai-frontend/routes.mjs';
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -306,7 +307,7 @@ async function recognizeText(imagePath) {
 
 // Функция для вызова API GigaChat с распознанным текстом
 async function callGigaChat(bearerToken, text) {
-  const url = 'https://gigachat.devices.sberbank.ru/api/v1/chat/completions';
+  const url = urls.gigachatURL;
   const data = {
     model: 'GigaChat',
     messages: [

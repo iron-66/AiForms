@@ -23,7 +23,7 @@ import FormTab from '../components/FormTab.vue';
 import QuestionsTab from '../components/QuestionsTab.vue';
 import JsonTab from '../components/JsonTab.vue';
 import axios from 'axios';
-import { urls } from '../../routes.js';
+import { urls } from '../../routes.mjs';
 
 export default {
     name: 'ResultPage',

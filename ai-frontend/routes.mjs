@@ -1,4 +1,4 @@
-const serverURL = 'http://84.201.147.208:3000'; // http://localhost:3000 http://84.201.148.240/:3000
+const serverURL = 'http://localhost:3000'; // http://84.201.147.208:3000
 
 export const urls = {
   uploadFile: `${serverURL}/uploadFile`,
@@ -11,4 +11,5 @@ export const urls = {
   getPrompt: `${serverURL}/getPrompt`,
   savePrompt: `${serverURL}/savePrompt`,
   saveAnswers: (id) => `${serverURL}/saveAnswers/${id}`,
+  gigachatURL: 'https://gigachat.devices.sberbank.ru/api/v1/chat/completions',
 };
