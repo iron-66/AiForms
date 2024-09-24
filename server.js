@@ -238,13 +238,12 @@ async function sendToGigaChat(req, res) {
   const pageNum = Number(req.params.pageNum);
 
   try {
-    console.log('Sending data to ' + llm);
-
     const imagePath = `${savePath}/page.${pageNum}.jpeg`;
     var startTime = performance.now();
 
-    // Распознавание текста на изображении с помощью Tesseract
-    const ocrResult = await recognizeText(imagePath);
+    // Распознавание текста на изображении
+    const ocrResult = await recognizeTextWithYandex(imagePath); // recognizeTextWithYandex
+    console.log(ocrResult);
 
     // Получение Bearer токена
     const bearerToken = await getBearerToken();
@@ -258,13 +257,14 @@ async function sendToGigaChat(req, res) {
 
     // Передача распознанного текста в модель LLM
     let result;
+    console.log('Sending data to ' + llm);
     if (llm === 'GigaChat') {
       result = await callGigaChat(bearerToken, combinedContent);
     } else {
       throw new Error('Unsupported LLM');
     }
 
-    var endTime = performance.now();
+    let endTime = performance.now();
     console.log(result.choices[0].message.content);
     console.log(`Process took ${(endTime - startTime) / 1000} seconds`);
     let ans = JSON.parse(result.choices[0].message.content);
@@ -303,6 +303,45 @@ async function recognizeText(imagePath) {
         reject(err);
       });
   });
+}
+
+// Функция для распознавания текста на изображении с помощью Yandex OCR
+async function recognizeTextWithYandex(imagePath) {
+  try {
+    // Чтение изображения
+    const file = fs.readFileSync(imagePath);
+    // Кодирование в base64
+    const encodedImage = Buffer.from(file).toString('base64');
+    const iamToken = process.env.IAM_TOKEN;
+    const folderId = process.env.FOLDER_ID;
+
+    // Формируем тело запроса
+    const requestBody = {
+      mimeType: 'JPEG',
+      languageCodes: ["ru","en"],
+      model: 'handwritten', //page handwritten
+      content: encodedImage
+    };
+
+    // Отправка POST-запроса к API OCR Яндекса
+    const response = await axios.post(
+      'https://ocr.api.cloud.yandex.net/ocr/v1/recognizeText',
+      requestBody,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${iamToken}`,
+          'x-folder-id': folderId,
+          'x-data-logging-enabled': true
+        }
+      }
+    );
+
+    return response.data.result.textAnnotation.fullText;
+  } catch (error) {
+    console.error('Ошибка при распознавании текста через Яндекс OCR:', error);
+    throw new Error('Ошибка при вызове Яндекс OCR API');
+  }
 }
 
 // Функция для вызова API GigaChat с распознанным текстом
