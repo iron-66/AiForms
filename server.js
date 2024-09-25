@@ -158,7 +158,7 @@ app.post('/uploadFile', upload.single('fileUpload'), async (req, res) => {
     }
   }
 
-  console.log('Done');
+  console.log('Done\n');
 
   // Создание JSON структуры формы
   var formJson = {
@@ -257,7 +257,7 @@ async function sendToGigaChat(req, res) {
 
     // Передача распознанного текста в модель LLM
     let result;
-    console.log('Sending data to ' + llm);
+    console.log(`Sending data to ${llm}...`);
     if (llm === 'GigaChat') {
       result = await callGigaChat(bearerToken, combinedContent);
     } else {
@@ -308,22 +308,19 @@ async function recognizeText(imagePath) {
 // Функция для распознавания текста на изображении с помощью Yandex OCR
 async function recognizeTextWithYandex(imagePath) {
   try {
-    // Чтение изображения
     const file = fs.readFileSync(imagePath);
-    // Кодирование в base64
     const encodedImage = Buffer.from(file).toString('base64');
-    const iamToken = process.env.IAM_TOKEN;
+    const iamToken = await getIamToken();
     const folderId = process.env.FOLDER_ID;
+    console.log('Recognizing the text...');
 
-    // Формируем тело запроса
     const requestBody = {
       mimeType: 'JPEG',
-      languageCodes: ["ru","en"],
+      languageCodes: ['ru','en'],
       model: 'handwritten', //page handwritten
       content: encodedImage
     };
 
-    // Отправка POST-запроса к API OCR Яндекса
     const response = await axios.post(
       'https://ocr.api.cloud.yandex.net/ocr/v1/recognizeText',
       requestBody,
@@ -339,8 +336,33 @@ async function recognizeTextWithYandex(imagePath) {
 
     return response.data.result.textAnnotation.fullText;
   } catch (error) {
-    console.error('Ошибка при распознавании текста через Яндекс OCR:', error);
-    throw new Error('Ошибка при вызове Яндекс OCR API');
+    console.error('Error when recognizing text via Yandex OCR:', error);
+    throw new Error('Error when calling Yandex OCR API');
+  }
+}
+
+// Функция для получения IAM-токена
+async function getIamToken() {
+  try {
+    console.log('Receiving a token...');
+    const oauthToken = process.env.OAUTH_TOKEN;
+    const response = await axios.post(
+      'https://iam.api.cloud.yandex.net/iam/v1/tokens',
+      {
+        yandexPassportOauthToken: oauthToken
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    console.log('Done\n');
+    return response.data.iamToken;
+  } catch (error) {
+    console.error('Error receiving IAM token:', error);
+    throw new Error('Error when generating IAM token');
   }
 }
 
