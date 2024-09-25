@@ -3,7 +3,7 @@
     <div class="central-panel">
         <h1 class="create-form-header">Создать форму</h1>
         <img src="../assets/images/Create logo.png" alt="Создать форму" class="create-form-logo">
-        <button class="process-button" :disabled="!selectedFile" @click="processFile">обработать</button>
+        <button class="process-button" :disabled="!selectedFile || isProcessing" @click="processFile">обработать</button>
     </div>
     <div class="upload-window" @click="triggerFileInput" @dragover.prevent @drop.prevent="handleFileDrop">
         <p v-if="!selectedFile" class="upload-description">Для выбора документа нажмите сюда<br>или перетащите файл</p>
@@ -26,6 +26,7 @@ export default {
     data() {
         return {
             selectedFile: null,
+            isProcessing: false,
         };
     },
     methods: {
@@ -47,6 +48,7 @@ export default {
         async processFile() {
             const formData = new FormData();
             formData.append('fileUpload', this.selectedFile);
+            this.isProcessing = true;
 
             try {
                 const response = await axios.post(urls.uploadFile, formData, {
@@ -67,7 +69,7 @@ export default {
     },
 }
 </script>
-  
+
 <style scoped>
 .create-form {
     display: flex;
