@@ -236,58 +236,66 @@ async function sendToGigaChat(req, res) {
   const formId = req.params.formId;
   var savePath = './public/results/form-' + formId;
   const pageNum = Number(req.params.pageNum);
+  let attempt = 0;
+  let hasResult = false;
 
-  try {
-    const imagePath = `${savePath}/page.${pageNum}.jpeg`;
-    var startTime = performance.now();
+  while (attempt < 3 && hasResult == false) {
+    try {
+      const imagePath = `${savePath}/page.${pageNum}.jpeg`;
+      var startTime = performance.now();
 
-    // Распознавание текста на изображении
-    const ocrResult = await recognizeTextWithYandex(imagePath); // recognizeTextWithYandex
-    console.log(ocrResult);
+      // Распознавание текста на изображении
+      const ocrResult = await recognizeTextWithYandex(imagePath);
+      console.log(ocrResult);
 
-    // Получение Bearer токена
-    const bearerToken = await getBearerToken();
+      // Получение Bearer токена
+      const bearerToken = await getBearerToken();
 
-    // Чтение промпта
-    const promptPath = path.join(dirname, 'data', 'gigachat_prompt.txt');
-    const prompt = fs.readFileSync(promptPath, 'utf8');
+      // Чтение промпта
+      const promptPath = path.join(dirname, 'data', 'gigachat_prompt.txt');
+      const prompt = fs.readFileSync(promptPath, 'utf8');
 
-    // Комбинирование содержимого промпта и распознанного текста
-    const combinedContent = `${prompt}\n\n${ocrResult}`;
+      // Комбинирование содержимого промпта и распознанного текста
+      const combinedContent = `${prompt}\n\n${ocrResult}`;
 
-    // Передача распознанного текста в модель LLM
-    let result;
-    console.log(`Sending data to ${llm}...`);
-    if (llm === 'GigaChat') {
-      result = await callGigaChat(bearerToken, combinedContent);
-    } else {
-      throw new Error('Unsupported LLM');
+      // Передача распознанного текста в модель LLM
+      let result;
+      console.log(`Sending data to ${llm}...`);
+      if (llm === 'GigaChat') {
+        result = await callGigaChat(bearerToken, combinedContent);
+      } else {
+        throw new Error('Unsupported LLM');
+      }
+
+      let endTime = performance.now();
+      console.log(result.choices[0].message.content);
+      console.log(`Process took ${(endTime - startTime) / 1000} seconds`);
+      let ans = JSON.parse(result.choices[0].message.content);
+      console.log(ans);
+
+      const formJson = loadFileData(formId);
+
+      var index = 0;
+      for (let i = 0; i < pageNum - 1; i++) {
+        index += formJson.formStructure[i];
+      }
+
+      var index = arraySum(formJson.formStructure, 0, pageNum - 1);
+      formJson.pages.splice(index, 0, ...ans.pages);
+
+      formJson.formStructure.splice(pageNum - 1, 1, ans.pages.length);
+
+      fs.writeFileSync(savePath + '/form.json', JSON.stringify(formJson, null, 2));
+      hasResult = true;
+      res.redirect('/results/form-' + formId + '/' + pageNum);
+    } catch (error) {
+      attempt++;
+      console.error('Error in GigaChat API call:', error);
+
+      if (attempt >= 3) {
+        return res.status(500).send('Error processing the request after 3 attempts');
+      }
     }
-
-    let endTime = performance.now();
-    console.log(result.choices[0].message.content);
-    console.log(`Process took ${(endTime - startTime) / 1000} seconds`);
-    let ans = JSON.parse(result.choices[0].message.content);
-    console.log(ans);
-
-    const formJson = loadFileData(formId);
-
-    var index = 0;
-    for (let i = 0; i < pageNum - 1; i++) {
-      index += formJson.formStructure[i];
-    }
-
-    var index = arraySum(formJson.formStructure, 0, pageNum - 1);
-    formJson.pages.splice(index, 0, ...ans.pages);
-
-    formJson.formStructure.splice(pageNum - 1, 1, ans.pages.length);
-
-    fs.writeFileSync(savePath + '/form.json', JSON.stringify(formJson, null, 2));
-
-    res.redirect('/results/form-' + formId + '/' + pageNum);
-  } catch (error) {
-    console.error('Error in GigaChat API call:', error);
-    return res.status(500).send('Error processing the request');
   }
 }
 
